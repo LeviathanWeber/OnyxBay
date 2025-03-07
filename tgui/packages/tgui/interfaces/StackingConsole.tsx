@@ -14,8 +14,8 @@ type InputData = {
   contents: Content[];
 };
 
-export const StackingConsole = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+export const StackingConsole = (props: any) => {
+  const { act, data } = useBackend<InputData>();
   return (
     <Window title="Stacking console" width={320} height={340}>
       <Window.Content scrollable>

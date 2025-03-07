@@ -11,18 +11,18 @@
  */
 export const flow =
   (...funcs) =>
-    (input, ...rest) => {
-      let output = input
-      for (const func of funcs) {
+  (input, ...rest) => {
+    let output = input;
+    for (let func of funcs) {
       // Recurse into the array of functions
-        if (Array.isArray(func)) {
-          output = flow(...func)(output, ...rest)
-        } else if (func) {
-          output = func(output, ...rest)
-        }
+      if (Array.isArray(func)) {
+        output = flow(...func)(output, ...rest);
+      } else if (func) {
+        output = func(output, ...rest);
       }
-      return output
     }
+    return output;
+  };
 
 /**
  * Composes single-argument functions from right to left.
@@ -38,14 +38,14 @@ export const flow =
  */
 export const compose = (...funcs) => {
   if (funcs.length === 0) {
-    return arg => arg
+    return (arg) => arg;
   }
   if (funcs.length === 1) {
-    return funcs[0]
+    return funcs[0];
   }
   return funcs.reduce(
     (a, b) =>
       (value, ...rest) =>
         a(b(value, ...rest), ...rest)
-  )
-}
+  );
+};

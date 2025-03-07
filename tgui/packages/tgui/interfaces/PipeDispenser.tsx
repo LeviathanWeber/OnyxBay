@@ -31,11 +31,10 @@ interface Recipe {
   pipe_icon: string;
 }
 
-export const PipeDispenser = (props: any, context: any) => {
-  const { act, data } = useBackend<StaticData>(context);
+export const PipeDispenser = (props: any) => {
+  const { act, data } = useBackend<StaticData>();
   const { categories = [] } = data;
   const [categoryName, setCategoryName] = useLocalState(
-    context,
     "",
     categories[0].cat_name
   );

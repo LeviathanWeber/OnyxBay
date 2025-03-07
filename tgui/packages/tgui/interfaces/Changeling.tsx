@@ -28,8 +28,8 @@ type InputData = {
   points: number;
 } & StaticData;
 
-const PowerIcon = (props: Power, context: any) => {
-  const { data } = useBackend<InputData>(context);
+const PowerIcon = (props: Power) => {
+  const { data } = useBackend<InputData>();
   const { icons } = data;
 
   const backgroundImage = props.owned
@@ -58,8 +58,8 @@ const EnhancedText = (props: { text: string }) => {
   );
 };
 
-const PowerCard = (props: Power, context: any) => {
-  const { data, act } = useBackend<InputData>(context);
+const PowerCard = (props: Power) => {
+  const { data, act } = useBackend<InputData>();
 
   const buyPower = (powerName) => {
     act("buy", {
@@ -73,7 +73,7 @@ const PowerCard = (props: Power, context: any) => {
       direction="column"
     >
       <Flex align="center">
-        {PowerIcon(props, context)}
+        {PowerIcon(props)}
         <span className="PowerName">{props.name}</span>
       </Flex>
       <p>
@@ -103,18 +103,16 @@ const PowerCard = (props: Power, context: any) => {
 type SortBy = "Name" | "Cost";
 type SortMode = "Des" | "Asc";
 
-export const Changeling = (props: any, context: any) => {
-  const { data } = useBackend<InputData>(context);
+export const Changeling = (props: any) => {
+  const { data } = useBackend<InputData>();
 
-  const [nameFilter, setNameFilter] = useLocalState(
-    context,
+  const [nameFilter, setNameFilter] = useLocalState<string | null>(
     "spellsNameFilter",
     null
   );
 
-  const [sortBy, setSortBy] = useLocalState<SortBy>(context, "sortBy", "Name");
+  const [sortBy, setSortBy] = useLocalState<SortBy>("sortBy", "Name");
   const [sortOrder, setSortOrder] = useLocalState<SortMode>(
-    context,
     "sortOrder",
     "Des"
   );
@@ -189,7 +187,7 @@ export const Changeling = (props: any, context: any) => {
             direction="column"
             justify="space-between"
           >
-            {powers.map((p) => PowerCard(p, context))}
+            {powers.map((p) => PowerCard(p))}
           </Flex>
         </Flex>
       </Window.Content>

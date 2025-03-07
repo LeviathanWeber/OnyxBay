@@ -26,8 +26,8 @@ type Data = {
 };
 
 /** Renders a list of checkboxes per items for input. */
-export const CheckboxInput = (props, context) => {
-  const { data } = useBackend<Data>(context);
+export const CheckboxInput = (props) => {
+  const { data } = useBackend<Data>();
   const {
     items = [],
     min_checked,
@@ -38,13 +38,11 @@ export const CheckboxInput = (props, context) => {
   } = data;
 
   const [selections, setSelections] = useLocalState<string[]>(
-    context,
     'selections',
     []
   );
 
   const [searchQuery, setSearchQuery] = useLocalState<string>(
-    context,
     'searchQuery',
     ''
   );

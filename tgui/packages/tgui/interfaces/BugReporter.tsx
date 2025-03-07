@@ -10,12 +10,12 @@ import {
   NoticeBox,
 } from "../components";
 
-export const BugReporter = (props: any, context: any) => {
-  const { act } = useBackend(context);
+export const BugReporter = (props: any) => {
+  const { act } = useBackend();
 
-  const [title, setReportTitle] = useLocalState(context, "name", "");
-  const [messageText, setReportText] = useLocalState(context, "message", "");
-  const [reportSent, setReportSent] = useLocalState(context, "false", false);
+  const [title, setReportTitle] = useLocalState("name", "");
+  const [messageText, setReportText] = useLocalState("message", "");
+  const [reportSent, setReportSent] = useLocalState("false", false);
 
   return (
     <Window width={340} height={440}>

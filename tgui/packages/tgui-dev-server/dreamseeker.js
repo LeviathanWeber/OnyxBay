@@ -4,12 +4,13 @@
  * @license MIT
  */
 
-import axios from "axios";
-import { exec } from "child_process";
-import { createLogger } from "common/logging.js";
-import { promisify } from "util";
+import { exec } from 'child_process';
+import { promisify } from 'util';
+import { createLogger } from './logging.js';
+import { require } from './require.js';
 
-const logger = createLogger("dreamseeker");
+const axios = require('axios');
+const logger = createLogger('dreamseeker');
 
 const instanceByPid = new Map();
 
@@ -24,14 +25,10 @@ export class DreamSeeker {
 
   topic(params = {}) {
     const query = Object.keys(params)
-      .map(
-        (key) => encodeURIComponent(key) + "=" + encodeURIComponent(params[key])
-      )
-      .join("&");
-    logger.log(
-      `topic call at ${this.client.defaults.baseURL + '/dummy?' + query}`
-    );
-    return this.client.get("/dummy?" + query);
+      .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+      .join('&');
+    logger.log(`topic call at ${this.client.defaults.baseURL + '/dummy?' + query}`);
+    return this.client.get('/dummy?' + query);
   }
 }
 
@@ -40,12 +37,12 @@ export class DreamSeeker {
  * @returns {DreamSeeker[]}
  */
 DreamSeeker.getInstancesByPids = async (pids) => {
-  if (process.platform !== "win32") {
+  if (process.platform !== 'win32') {
     return [];
   }
   const instances = [];
   const pidsToResolve = [];
-  for (const pid of pids) {
+  for (let pid of pids) {
     const instance = instanceByPid.get(pid);
     if (instance) {
       instances.push(instance);
@@ -55,7 +52,7 @@ DreamSeeker.getInstancesByPids = async (pids) => {
   }
   if (pidsToResolve.length > 0) {
     try {
-      const command = "netstat -ano | findstr TCP | findstr 0.0.0.0:0";
+      const command = 'netstat -ano | findstr TCP | findstr 0.0.0.0:0';
       const { stdout } = await promisify(exec)(command, {
         // Max buffer of 1MB (default is 200KB)
         maxBuffer: 1024 * 1024,
@@ -63,8 +60,8 @@ DreamSeeker.getInstancesByPids = async (pids) => {
       // Line format:
       // proto addr mask mode pid
       const entries = [];
-      const lines = stdout.split("\r\n");
-      for (const line of lines) {
+      const lines = stdout.split('\r\n');
+      for (let line of lines) {
         const words = line.match(/\S+/g);
         if (!words || words.length === 0) {
           continue;
@@ -78,15 +75,15 @@ DreamSeeker.getInstancesByPids = async (pids) => {
         }
       }
       const len = entries.length;
-      logger.log("found", len, plural("instance", len));
-      for (const entry of entries) {
+      logger.log('found', len, plural('instance', len));
+      for (let entry of entries) {
         const { pid, addr } = entry;
         const instance = new DreamSeeker(pid, addr);
         instances.push(instance);
         instanceByPid.set(pid, instance);
       }
     } catch (err) {
-      if (err.code === "ERR_CHILD_PROCESS_STDIO_MAXBUFFER") {
+      if (err.code === 'ERR_CHILD_PROCESS_STDIO_MAXBUFFER') {
         logger.error(err.message, err.code);
       } else {
         logger.error(err);
@@ -97,4 +94,4 @@ DreamSeeker.getInstancesByPids = async (pids) => {
   return instances;
 };
 
-const plural = (word, n) => (n !== 1 ? word + "s" : word);
+const plural = (word, n) => (n !== 1 ? word + 's' : word);

@@ -81,7 +81,6 @@
 		window.initialize(
 			fancy = user.get_preference_value(/datum/client_preference/tgui_style) == GLOB.PREF_FANCY,
 			assets = list(
-				get_asset_datum(/datum/asset/simple/tgui_common),
 				get_asset_datum(/datum/asset/simple/tgui),
 				get_asset_datum(/datum/asset/simple/fontawesome)
 			))

@@ -24,8 +24,8 @@ interface InputData {
   storedStockParts: StockPart[];
 }
 
-export const StockPartsProcessor = (props: any, context: any) => {
-  const { act, data, getTheme } = useBackend<InputData>(context);
+export const StockPartsProcessor = (props: any) => {
+  const { act, data, getTheme } = useBackend<InputData>();
 
   const onEjectHandler = (partType: string) => {
     act("eject", {
@@ -107,7 +107,7 @@ type StorageDisplayProps = {
   onPrepare: (partType: string) => void;
 };
 
-const StorageDisplay = (props: StorageDisplayProps, context: any) => {
+const StorageDisplay = (props: StorageDisplayProps) => {
   const { storedSteel, maxStoredSteel, storedStockParts, onEject, onPrepare } =
     props;
 
@@ -213,7 +213,7 @@ type StockPartRowProps = {
 };
 
 // Here I do a bit of IE9 magic to make ellipsis and other stuff to actually work...
-const StockPartRow = (props: StockPartRowProps, context: any) => {
+const StockPartRow = (props: StockPartRowProps) => {
   const { name, amount, children } = props;
 
   return (
@@ -239,7 +239,7 @@ const StockPartRow = (props: StockPartRowProps, context: any) => {
   );
 };
 
-const StockPartEmptyRow = (props: any, context: any) => {
+const StockPartEmptyRow = (props: any) => {
   return (
     <Table.Row>
       <Table.Cell />

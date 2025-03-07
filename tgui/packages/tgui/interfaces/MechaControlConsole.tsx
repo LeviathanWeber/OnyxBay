@@ -36,11 +36,10 @@ interface InputData {
   beacons: Beacon[];
 }
 
-export const MechaControlConsole = (props: InputData, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+export const MechaControlConsole = (props: InputData) => {
+  const { act, data } = useBackend<InputData>();
   const { beacons } = data;
-  const [currentBeaconLog, setCurrentBeaconLog] = useLocalState(
-    context,
+  const [currentBeaconLog, setCurrentBeaconLog] = useLocalState<Beacon | null>(
     "currentBeaconLog",
     null
   );

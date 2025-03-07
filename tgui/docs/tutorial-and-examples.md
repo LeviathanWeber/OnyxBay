@@ -4,7 +4,7 @@
 
 Basic tgui backend code consists of the following vars and procs:
 
-```dm
+```
 ui_interact(mob/user, datum/tgui/ui)
 ui_data(mob/user)
 ui_act(action, params)
@@ -76,8 +76,7 @@ input. The input's `action` and `params` are passed to the proc.
 
 ```dm
 /obj/machinery/my_machine/ui_act(action, params)
-  . = ..()
-  if(.)
+  if(..())
     return
   if(action == "change_color")
     var/new_color = params["color"]
@@ -89,20 +88,13 @@ input. The input's `action` and `params` are passed to the proc.
 ```
 
 The `..()` (parent call) is very important here, as it is how we check that the
-user is allowed to use this interface (to avoid so-called href exploits). When
-any event has been handled `..()` will return `TRUE`. It is important to clamp
-and sanitize all input here. Always assume the user is attempting to exploit the
-game.
-
-When `..()` has returned `TRUE` your interface can safely assume that the user's
-action has been handled already by some parent proc and you should not continue
-to handle this, instead preserving and returning the parent proc's return value.
+user is allowed to use this interface (to avoid so-called href exploits). It is
+also very important to clamp and sanitize all input here. Always assume the user
+is attempting to exploit the game.
 
 Also note the use of `. = TRUE` (or `FALSE`), which is used to notify the UI
-that this input has been handled. When `ui_act` eventually returns, a value of
-`TRUE` indicates that the input has been handled and that the UI should update.
-This is important for UIs that do not auto-update, as otherwise the user will
-not be able to see the interface update based on thier actions.
+that this input caused an update. This is especially important for UIs that do
+not auto-update, as otherwise the user will never see their change.
 
 ### Frontend
 
@@ -114,8 +106,7 @@ recommend getting yourself introduced to
 
 A React component is not a regular HTML template. A component is a
 javascript function, which accepts a `props` object (that contains
-properties passed to a component) and a `context` object (which is
-necessary to access UI data) as arguments, and outputs an HTML-like
+properties passed to a component) as an argument, and outputs an HTML-like
 structure.
 
 So let's create our first React Component. Create a file with a name
@@ -127,15 +118,15 @@ import { useBackend } from '../backend';
 import { Button, LabeledList, Section } from '../components';
 import { Window } from '../layouts';
 
-export const SampleInterface = (props, context) => {
-  const { act, data } = useBackend(context);
+export const SampleInterface = (props) => {
+  const { act, data } = useBackend();
   // Extract `health` and `color` variables from the `data` object.
   const {
     health,
     color,
   } = data;
   return (
-    <Window resizable>
+    <Window>
       <Window.Content scrollable>
         <Section title="Health status">
           <LabeledList>
@@ -158,7 +149,7 @@ export const SampleInterface = (props, context) => {
 };
 ```
 
-Here are the key variables you get from a `useBackend(context)` function:
+Here are the key variables you get from a `useBackend()` function:
 
 - `config` is part of core tgui. It contains meta-information about the
 interface and who uses it, BYOND refs to various objects, and so forth.
@@ -259,9 +250,9 @@ import { useBackend } from '../backend';
 import { Button, LabeledList, Section } from '../components';
 import { Window } from '../layouts';
 
-export const SampleInterface = (props, context) => {
+export const SampleInterface = (props) => {
   return (
-    <Window resizable>
+    <Window>
       <Window.Content scrollable>
         <HealthStatus user="Jerry" />
       </Window.Content>
@@ -269,8 +260,8 @@ export const SampleInterface = (props, context) => {
   );
 };
 
-const HealthStatus = (props, context) => {
-  const { act, data } = useBackend(context);
+const HealthStatus = (props) => {
+  const { act, data } = useBackend();
   const {
     user,
   } = props;
@@ -318,7 +309,7 @@ upon code review):
     if("copypasta")
       var/newvar = params["var"]
       // A demo of proper input sanitation.
-      var = CLAMP(newvar, min_val, max_val)
+      var = clamp(newvar, min_val, max_val)
       . = TRUE
   update_icon() // Not applicable to all objects.
 ```
@@ -330,15 +321,15 @@ import { useBackend } from '../backend';
 import { Button, LabeledList, Section } from '../components';
 import { Window } from '../layouts';
 
-export const SampleInterface = (props, context) => {
-  const { act, data } = useBackend(context);
+export const SampleInterface = (props) => {
+  const { act, data } = useBackend();
   // Extract `health` and `color` variables from the `data` object.
   const {
     health,
     color,
   } = data;
   return (
-    <Window resizable>
+    <Window>
       <Window.Content scrollable>
         <Section title="Health status">
           <LabeledList>

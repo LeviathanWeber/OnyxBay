@@ -35,8 +35,8 @@ interface InputData {
   decals: Decal[];
 }
 
-const decalButton = (decal: Decal, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+const decalButton = (decal: Decal) => {
+  const { act, data } = useBackend<InputData>();
   const { settings, decals } = data;
   const selectedDecal = decals.find((d) => d.path === settings.decal);
 
@@ -52,8 +52,8 @@ const decalButton = (decal: Decal, context: any) => {
   );
 };
 
-const directionButtons = (context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+const directionButtons = () => {
+  const { act, data } = useBackend<InputData>();
   const { settings, decals } = data;
   const { paint_dir } = settings;
   const selectedDecal = decals.find((d) => d.path === settings.decal);
@@ -129,8 +129,8 @@ const directionButtons = (context: any) => {
   );
 };
 
-export const FloorPainter = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+export const FloorPainter = (props: any) => {
+  const { act, data } = useBackend<InputData>();
   const { settings, decals } = data;
   const selectedDecal = decals.find((d) => d.path === settings.decal);
 
@@ -138,7 +138,7 @@ export const FloorPainter = (props: any, context: any) => {
     <Window width={300} height={340}>
       <Window.Content>
         <Stack width="100%" justify="space-between">
-          <Stack.Item>{directionButtons(context)}</Stack.Item>
+          <Stack.Item>{directionButtons()}</Stack.Item>
           <Stack.Item>
             <Stack vertical justify="space-between" textAlign="center" fill>
               <Stack.Item>
@@ -167,7 +167,7 @@ export const FloorPainter = (props: any, context: any) => {
         </Stack>
         <Divider />
         {decals.map((decal) => {
-          return decalButton(decal, context);
+          return decalButton(decal);
         })}
       </Window.Content>
     </Window>

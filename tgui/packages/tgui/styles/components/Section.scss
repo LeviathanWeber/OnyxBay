@@ -77,19 +77,6 @@ $separator-color: colors.$primary !default;
   bottom: 0;
 }
 
-.Section--fill.Section--iefix {
-  display: table !important;
-  width: 100% !important;
-  height: 100% !important;
-  border-collapse: collapse;
-  border-spacing: 0;
-
-  & > .Section__rest {
-    display: table-row !important;
-    height: 100% !important;
-  }
-}
-
 .Section--scrollable {
   overflow-x: hidden;
   overflow-y: hidden;
@@ -101,7 +88,7 @@ $separator-color: colors.$primary !default;
 }
 
 // Nested sections
-.Section .Section {
+.Section .Section:not(.Section--independent) {
   background-color: transparent;
   margin-left: -0.5em;
   margin-right: -0.5em;
@@ -120,4 +107,20 @@ $separator-color: colors.$primary !default;
 // Level 3 section title
 .Section .Section .Section .Section__titleText {
   font-size: base.em(12px);
+}
+
+.Section.LogSection {
+  background-color: black;
+  color: white;
+  white-space: pre-wrap;
+}
+
+.section-background {
+  background-color: functions.fake-alpha($background-color, base.$color-bg);
+  background-color: $background-color;
+}
+
+.section-background-dark {
+  background-color: functions.fake-alpha(rgba(0, 0, 0, 0.2), base.$color-bg) !important;
+  background-color: $background-color !important;
 }

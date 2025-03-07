@@ -14,8 +14,8 @@ export interface LockData {
   lock_setshort: BooleanLike;
 }
 
-export const LockedSafe = (props: any, context: any) => {
-  const { act, data } = useBackend<LockData>(context);
+export const LockedSafe = (props: any) => {
+  const { act, data } = useBackend<LockData>();
   const { input_code, locked, lock_code, emagged, lock_setshort } = data;
   return (
     <Window width={300} height={400}>
@@ -26,8 +26,8 @@ export const LockedSafe = (props: any, context: any) => {
   );
 };
 
-export const LockMenu = (props: any, context: any) => {
-  const { act, data } = useBackend<LockData>(context);
+export const LockMenu = (props: any) => {
+  const { act, data } = useBackend<LockData>();
   const { input_code, locked, lock_code, emagged, lock_setshort } = data;
 
   return (

@@ -30,17 +30,15 @@ const MAX_PER_PAGE = 18;
 const numberWithinRange = (min: number, n: number, max: number) =>
   Math.min(Math.max(n, min), max);
 
-export const UnderWardrobe = (props: any, context: any) => {
-  const { data, act } = useBackend<InputData>(context);
+export const UnderWardrobe = (props: any) => {
+  const { data, act } = useBackend<InputData>();
 
   const [selectedUndieCategory, setSelectedUndieCategory] = useLocalState(
-    context,
     "itemCategory",
     data.underwearCategories[0]?.name
   );
 
   const [currentPage, setCurrentPage] = useLocalState(
-    context,
     "currentPage",
     1
   );

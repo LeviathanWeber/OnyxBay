@@ -15,10 +15,9 @@ type InputData = {
   maxTemperature: number;
 };
 
-export const SpaceHeater = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+export const SpaceHeater = (props: any) => {
+  const { act, data } = useBackend<InputData>();
   const [useKelvin, setUseKelvin] = useLocalState<boolean>(
-    context,
     "useKelvin",
     true
   );

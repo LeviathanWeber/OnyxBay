@@ -1,3 +1,4 @@
+import { AnyNaptrRecord } from "node:dns";
 import { useBackend, useLocalState } from "../backend";
 import {
   AnimatedNumber,
@@ -48,9 +49,8 @@ const MAX_PER_PAGE = 15;
 const numberWithinRange = (min: number, n: number, max: number) =>
   Math.min(Math.max(n, min), max);
 
-const paginator = (recipes: Recipe[], context: any) => {
+const paginator = (recipes: Recipe[]) => {
   const [currentPage, setCurrentPage] = useLocalState(
-    context,
     "currentPage",
     1
   );
@@ -89,15 +89,13 @@ const paginator = (recipes: Recipe[], context: any) => {
   );
 };
 
-export const Autolathe = (props: any, context: any) => {
-  const { act, data, getTheme } = useBackend<InputData>(context);
+export const Autolathe = (props: AnyNaptrRecord) => {
+  const { act, data, getTheme } = useBackend<InputData>();
   const [searchQuery, setSearchQuery] = useLocalState(
-    context,
     "searchQuery",
     null
   );
   const [currentPage, setCurrentPage] = useLocalState(
-    context,
     "currentPage",
     1
   );
@@ -159,7 +157,7 @@ export const Autolathe = (props: any, context: any) => {
             })}
           </Flex>
           <Divider />
-          {paginator(found, context)}
+          {paginator(found)}
           <Divider />
           <Table>
             <Table.Row>

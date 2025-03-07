@@ -1,15 +1,14 @@
-/* eslint-disable no-undef */
 /**
  * @file
  * @copyright 2020 Aleksej Komarov
  * @license MIT
  */
 
-import * as keycodes from "common/keycodes";
-import { globalEvents, KeyEvent } from "./events";
-import { createLogger } from "./logging";
+import * as keycodes from 'common/keycodes';
+import { globalEvents, KeyEvent } from './events';
+import { createLogger } from './logging';
 
-const logger = createLogger("hotkeys");
+const logger = createLogger('hotkeys');
 
 // BYOND macros, in `key: command` format.
 const byondMacros: Record<string, string> = {};
@@ -32,35 +31,41 @@ const hotKeysAcquired = [
 // State of passed-through keys.
 const keyState: Record<string, boolean> = {};
 
+// Custom listeners for key events
+const keyListeners: ((key: KeyEvent) => void)[] = [];
+
+// Is hotkey mode on?
+let hotkeyMode;
+
 /**
  * Converts a browser keycode to BYOND keycode.
  */
 const keyCodeToByond = (keyCode: number) => {
-  if (keyCode === 16) return "Shift";
-  if (keyCode === 17) return "Ctrl";
-  if (keyCode === 18) return "Alt";
-  if (keyCode === 33) return "Northeast";
-  if (keyCode === 34) return "Southeast";
-  if (keyCode === 35) return "Southwest";
-  if (keyCode === 36) return "Northwest";
-  if (keyCode === 37) return "West";
-  if (keyCode === 38) return "North";
-  if (keyCode === 39) return "East";
-  if (keyCode === 40) return "South";
-  if (keyCode === 45) return "Insert";
-  if (keyCode === 46) return "Delete";
+  if (keyCode === 16) return 'Shift';
+  if (keyCode === 17) return 'Ctrl';
+  if (keyCode === 18) return 'Alt';
+  if (keyCode === 33) return 'Northeast';
+  if (keyCode === 34) return 'Southeast';
+  if (keyCode === 35) return 'Southwest';
+  if (keyCode === 36) return 'Northwest';
+  if (keyCode === 37) return 'West';
+  if (keyCode === 38) return 'North';
+  if (keyCode === 39) return 'East';
+  if (keyCode === 40) return 'South';
+  if (keyCode === 45) return 'Insert';
+  if (keyCode === 46) return 'Delete';
   if ((keyCode >= 48 && keyCode <= 57) || (keyCode >= 65 && keyCode <= 90)) {
     return String.fromCharCode(keyCode);
   }
   if (keyCode >= 96 && keyCode <= 105) {
-    return "Numpad" + (keyCode - 96);
+    return 'Numpad' + (keyCode - 96);
   }
   if (keyCode >= 112 && keyCode <= 123) {
-    return "F" + (keyCode - 111);
+    return 'F' + (keyCode - 111);
   }
-  if (keyCode === 188) return ",";
-  if (keyCode === 189) return "-";
-  if (keyCode === 190) return ".";
+  if (keyCode === 188) return ',';
+  if (keyCode === 189) return '-';
+  if (keyCode === 190) return '.';
 };
 
 /**
@@ -70,20 +75,20 @@ const keyCodeToByond = (keyCode: number) => {
 const handlePassthrough = (key: KeyEvent) => {
   const keyString = String(key);
   // In addition to F5, support reloading with Ctrl+R and Ctrl+F5
-  if (keyString === "Ctrl+F5" || keyString === "Ctrl+R") {
+  if (keyString === 'Ctrl+F5' || keyString === 'Ctrl+R') {
     location.reload();
     return;
   }
   // Prevent passthrough on Ctrl+F
-  if (keyString === "Ctrl+F") {
+  if (keyString === 'Ctrl+F') {
+    return;
+  }
+  // Prevent passthrough on old non-hotkey mode
+  if (!hotkeyMode) {
     return;
   }
   // NOTE: Alt modifier is pretty bad and sticky in IE11.
-  if (
-    key.event.defaultPrevented ||
-    key.isModifierKey() ||
-    hotKeysAcquired.includes(key.code)
-  ) {
+  if (key.event.defaultPrevented || key.isModifierKey() || hotKeysAcquired.includes(key.code)) {
     return;
   }
   const byondKeyCode = keyCodeToByond(key.code);
@@ -93,7 +98,7 @@ const handlePassthrough = (key: KeyEvent) => {
   // Macro
   const macro = byondMacros[byondKeyCode];
   if (macro) {
-    logger.debug("macro", macro);
+    logger.debug('macro', macro);
     return Byond.command(macro);
   }
   // KeyDown
@@ -131,7 +136,7 @@ export const releaseHotKey = (keyCode: number) => {
 };
 
 export const releaseHeldKeys = () => {
-  for (const byondKeyCode of Object.keys(keyState)) {
+  for (let byondKeyCode of Object.keys(keyState)) {
     if (keyState[byondKeyCode]) {
       keyState[byondKeyCode] = false;
       logger.log(`releasing key "${byondKeyCode}"`);
@@ -140,6 +145,11 @@ export const releaseHeldKeys = () => {
   }
 };
 
+export const updateHotkeyMode = () =>
+  Byond.winget('mainwindow', 'macro').then((macro) => {
+    hotkeyMode = macro !== 'old_default';
+  });
+
 type ByondSkinMacro = {
   command: string;
   name: string;
@@ -147,11 +157,11 @@ type ByondSkinMacro = {
 
 export const setupHotKeys = () => {
   // Read macros
-  Byond.winget("default.*").then((data: Record<string, string>) => {
+  Byond.winget('default.*').then((data: Record<string, string>) => {
     // Group each macro by ref
     const groupedByRef: Record<string, ByondSkinMacro> = {};
-    for (const key of Object.keys(data)) {
-      const keyPath = key.split(".");
+    for (let key of Object.keys(data)) {
+      const keyPath = key.split('.');
       const ref = keyPath[1];
       const prop = keyPath[2];
       if (ref && prop) {
@@ -166,20 +176,52 @@ export const setupHotKeys = () => {
     }
     // Insert macros
     const escapedQuotRegex = /\\"/g;
-    const unescape = (str: string) =>
-      str.substring(1, str.length - 1).replace(escapedQuotRegex, '"');
-    for (const ref of Object.keys(groupedByRef)) {
+    const unescape = (str: string) => str.substring(1, str.length - 1).replace(escapedQuotRegex, '"');
+    for (let ref of Object.keys(groupedByRef)) {
       const macro = groupedByRef[ref];
       const byondKeyName = unescape(macro.name);
       byondMacros[byondKeyName] = unescape(macro.command);
     }
-    logger.debug("loaded macros", byondMacros);
+    logger.debug('loaded macros', byondMacros);
+  });
+  updateHotkeyMode();
+  globalEvents.on('window-focus', () => {
+    updateHotkeyMode();
   });
   // Setup event handlers
-  globalEvents.on("window-blur", () => {
+  globalEvents.on('window-blur', () => {
     releaseHeldKeys();
   });
-  globalEvents.on("key", (key: KeyEvent) => {
+  globalEvents.on('key', (key: KeyEvent) => {
+    for (const keyListener of keyListeners) {
+      keyListener(key);
+    }
     handlePassthrough(key);
   });
+};
+
+/**
+ * Registers for any key events, such as key down or key up.
+ * This should be preferred over directly connecting to keydown/keyup
+ * as it lets tgui prevent the key from reaching BYOND.
+ *
+ * If using in a component, prefer KeyListener, which automatically handles
+ * stopping listening when unmounting.
+ *
+ * @param callback The function to call whenever a key event occurs
+ * @returns A callback to stop listening
+ */
+export const listenForKeyEvents = (callback: (key: KeyEvent) => void): (() => void) => {
+  keyListeners.push(callback);
+
+  let removed = false;
+
+  return () => {
+    if (removed) {
+      return;
+    }
+
+    removed = true;
+    keyListeners.splice(keyListeners.indexOf(callback), 1);
+  };
 };

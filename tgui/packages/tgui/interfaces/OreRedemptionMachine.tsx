@@ -36,8 +36,8 @@ type InputData = {
   machine_state: boolean;
 };
 
-export const OreRedemptionMachine = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+export const OreRedemptionMachine = (props: any) => {
+  const { act, data } = useBackend<InputData>();
   return (
     <Window title="Ore Redemption Machine" width={435} height={400}>
       <Window.Content>
@@ -104,8 +104,8 @@ export const OreRedemptionMachine = (props: any, context: any) => {
   );
 };
 
-function MaterialsList(props: any, context: any) {
-  const { act, data } = useBackend<InputData>(context);
+function MaterialsList(props: any) {
+  const { act, data } = useBackend<InputData>();
   return (
     <Table>
       {data.materials.map((material) => (

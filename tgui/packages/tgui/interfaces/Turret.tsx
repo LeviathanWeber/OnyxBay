@@ -45,8 +45,8 @@ export interface TurretData {
   targettingData: TargetingData;
 }
 
-export const Turret = (props: any, context: any) => {
-  const { data } = useBackend<TurretData>(context);
+export const Turret = (props: any) => {
+  const { data } = useBackend<TurretData>();
 
   return (
     <Window title="Turret Panel" width={300} height={260}>
@@ -61,14 +61,13 @@ export interface TurretDisplayProps {
   turretData: TurretData;
 }
 
-export const TurretDisplay = (props: TurretDisplayProps, context: any) => {
-  const { act } = useBackend(context);
+export const TurretDisplay = (props: TurretDisplayProps) => {
+  const { act } = useBackend();
   const { turretData } = props;
 
   const { isMalf, isEnabled, hasMaster, hasSignaler } = turretData;
 
   const [settingsOpen, setSettingsOpen] = useLocalState(
-    context,
     "settingsOpen",
     false
   );
@@ -134,7 +133,7 @@ interface TurretSettingsProps {
   onBearingClick: () => void;
 }
 
-export const TurretSettings = (props: TurretSettingsProps, context: any) => {
+export const TurretSettings = (props: TurretSettingsProps) => {
   const { gun, settings, onBearingClick } = props;
 
   const { gunName, gunAmmo, gunMaxAmmo, storedAmmo } = gun;
@@ -188,7 +187,7 @@ interface TurgetTargetingProps {
   onToggle: (action: string) => void;
 }
 
-export const TurretTargeting = (props: TurgetTargetingProps, context: any) => {
+export const TurretTargeting = (props: TurgetTargetingProps) => {
   const { data, onToggle } = props;
   const {
     lethalMode,

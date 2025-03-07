@@ -37,7 +37,7 @@ type InputData = {
   event: Event;
 };
 
-function OptionTooltip(props: { option: Option }, context: any) {
+function OptionTooltip(props: { option: Option }) {
   const option = props.option;
 
   return (
@@ -53,8 +53,8 @@ function OptionTooltip(props: { option: Option }, context: any) {
   );
 }
 
-export function EventWindow(props: any, context: any) {
-  const { act, data, getTheme } = useBackend<InputData>(context);
+export function EventWindow(props: any) {
+  const { act, data, getTheme } = useBackend<InputData>();
   const event = data.event;
   const prefered = [...event.options].sort((a, b) => b.weight - a.weight)[0];
 

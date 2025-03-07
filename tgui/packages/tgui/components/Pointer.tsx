@@ -12,8 +12,7 @@
  * SOFTWARE.
  */
 
-import { classes } from "common/react";
-import { InfernoNode } from "inferno";
+import { classes } from 'common/react';
 
 interface PointerProps {
   className?: string;
@@ -22,13 +21,8 @@ interface PointerProps {
   color: string;
 }
 
-export const Pointer = ({
-  className,
-  color,
-  left,
-  top = 0.5,
-}: PointerProps): InfernoNode => {
-  const nodeClassName = classes(["react-colorful__pointer", className]);
+export const Pointer = ({ className, color, left, top = 0.5 }: PointerProps) => {
+  const nodeClassName = classes(['react-colorful__pointer', className]);
 
   const style = {
     top: `${top * 100}%`,
@@ -37,10 +31,7 @@ export const Pointer = ({
 
   return (
     <div className={nodeClassName} style={style}>
-      <div
-        className="react-colorful__pointer-fill"
-        style={{ "background-color": color }}
-      />
+      <div className="react-colorful__pointer-fill" style={{ backgroundColor: color }} />
     </div>
   );
 };

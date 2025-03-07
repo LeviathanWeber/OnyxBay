@@ -39,11 +39,10 @@ type Seed = {
   amount: number;
 };
 
-export const SeedStorage = (props, context) => {
-  const { act, data } = useBackend<SeedData>(context);
+export const SeedStorage = (props) => {
+  const { act, data } = useBackend<SeedData>();
 
   const [selectedSeed, setSelectedSeed] = useLocalState(
-    context,
     "spellsNameFilter",
     null
   );

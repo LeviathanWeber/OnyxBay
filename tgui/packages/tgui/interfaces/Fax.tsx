@@ -23,8 +23,8 @@ type InputData = {
   faxes: FaxInfo[];
 };
 
-export const Fax = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+export const Fax = (props: any) => {
+  const { act, data } = useBackend<InputData>();
   return (
     <Window width={290} height={390} title="Fax machine">
       <Window.Content>

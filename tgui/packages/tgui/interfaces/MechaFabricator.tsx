@@ -59,10 +59,9 @@ const ejectMultipliers = [1, 5, 10];
 
 const queueElement = (
   props: Queue,
-  context: any,
   addDivider: boolean = false
 ) => {
-  const { act } = useBackend<InputData>(context);
+  const { act } = useBackend<InputData>();
 
   return (
     <Stack vertical className="MechaFabricator__slideAnimation">
@@ -87,8 +86,8 @@ const queueElement = (
   );
 };
 
-const fabricatorStorage = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+const fabricatorStorage = (props: any) => {
+  const { act, data } = useBackend<InputData>();
 
   return (
     <Section className="Storage" minHeight="100%" title="Storage">
@@ -143,10 +142,9 @@ const fabricatorStorage = (props: any, context: any) => {
   );
 };
 
-const fabricatorProduction = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+const fabricatorProduction = (props: any) => {
+  const { act, data } = useBackend<InputData>();
   const [searchQuery, setSearchQuery] = useLocalState(
-    context,
     "searchQuery",
     null
   );
@@ -241,8 +239,8 @@ const fabricatorProduction = (props: any, context: any) => {
   );
 };
 
-const fabricatorQueue = (props: any, context: any) => {
-  const { data } = useBackend<InputData>(context);
+const fabricatorQueue = (props: any) => {
+  const { data } = useBackend<InputData>();
 
   return (
     <Section width="22rem" minHeight="100%" title="Queue">
@@ -254,7 +252,6 @@ const fabricatorQueue = (props: any, context: any) => {
               name: data.current,
               progress: data.builtperc,
             },
-            context
           )}
           {data.queue.map((queue, i) => {
             return queueElement(
@@ -263,7 +260,6 @@ const fabricatorQueue = (props: any, context: any) => {
                 name: queue,
                 progress: "Queued",
               },
-              context,
               true
             );
           })}
@@ -275,8 +271,8 @@ const fabricatorQueue = (props: any, context: any) => {
   );
 };
 
-export const MechaFabricator = (props: any, context: any) => {
-  const { getTheme } = useBackend<InputData>(context);
+export const MechaFabricator = (props: any) => {
+  const { getTheme } = useBackend<InputData>();
 
   return (
     <Window
@@ -287,11 +283,11 @@ export const MechaFabricator = (props: any, context: any) => {
     >
       <Window.Content>
         <Stack fill justify="stretch">
-          <Stack.Item>{fabricatorStorage(props, context)}</Stack.Item>
+          <Stack.Item>{fabricatorStorage(props)}</Stack.Item>
           <Stack.Item width="100%">
-            {fabricatorProduction(props, context)}
+            {fabricatorProduction(props)}
           </Stack.Item>
-          <Stack.Item>{fabricatorQueue(props, context)}</Stack.Item>
+          <Stack.Item>{fabricatorQueue(props)}</Stack.Item>
         </Stack>
       </Window.Content>
     </Window>

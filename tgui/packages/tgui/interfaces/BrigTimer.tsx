@@ -14,8 +14,8 @@ interface InputData {
   flashes: Flash[];
 }
 
-export const BrigTimer = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+export const BrigTimer = (props: any) => {
+  const { act, data } = useBackend<InputData>();
   const flashCharging: boolean =
     data.flashes.filter((flash, _) => !flash.status).length > 0;
 

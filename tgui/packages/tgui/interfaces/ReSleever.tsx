@@ -13,8 +13,8 @@ interface InputData {
   ready: number;
 }
 
-export const ReSleever = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+export const ReSleever = (props: any) => {
+  const { act, data } = useBackend<InputData>();
   const progress = data.remaining / data.timetosleeve;
 
   return (

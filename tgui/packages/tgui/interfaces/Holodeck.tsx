@@ -27,8 +27,8 @@ interface Program {
   name: string;
 }
 
-export const Holodeck = (props: any, context: any) => {
-  const { act, data } = useBackend<Data>(context);
+export const Holodeck = (props: any) => {
+  const { act, data } = useBackend<Data>();
   const {
     isLocked,
     canToggleSafety,
@@ -138,7 +138,7 @@ interface HolodeckButtonProps {
   onClick: () => void;
 }
 
-const HolodeckButton = (props: HolodeckButtonProps, _context: any) => {
+const HolodeckButton = (props: HolodeckButtonProps) => {
   const { icon, desc, selected, disabled = false, onClick } = props;
 
   return (

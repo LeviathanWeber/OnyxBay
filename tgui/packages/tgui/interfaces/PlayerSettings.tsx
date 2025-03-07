@@ -107,8 +107,8 @@ function PreviewWindow(props: PreviewWindowProps) {
   );
 }
 
-function PreferenceEntry(props: PreferenceEntryProps, context: any) {
-  const { act } = useBackend<InputData>(context);
+function PreferenceEntry(props: PreferenceEntryProps) {
+  const { act } = useBackend<InputData>();
   const { preference } = props;
 
   return (
@@ -137,7 +137,7 @@ type PreferenceCategoryProps = {
   category: string;
 };
 
-function PreferencesCategory(props: PreferenceCategoryProps, context: any) {
+function PreferencesCategory(props: PreferenceCategoryProps) {
   return (
     <Collapsible
       className="PreferencesCategory"
@@ -161,13 +161,13 @@ function rgbToHex(r: number, g: number, b: number): string {
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 
-function UiTab(props: any, context: any) {
-  const { data, act } = useBackend<InputData>(context);
-  const [style, setStyle] = useLocalState(context, "style", "Goon");
-  const [colorR, setColorR] = useLocalState(context, "r", 255);
-  const [colorG, setColorG] = useLocalState(context, "g", 255);
-  const [colorB, setColorB] = useLocalState(context, "b", 255);
-  const [alpha, setAlpha] = useLocalState(context, "alpha", 1.0);
+function UiTab(props: any) {
+  const { data, act } = useBackend<InputData>();
+  const [style, setStyle] = useLocalState("style", "Goon");
+  const [colorR, setColorR] = useLocalState("r", 255);
+  const [colorG, setColorG] = useLocalState("g", 255);
+  const [colorB, setColorB] = useLocalState("b", 255);
+  const [alpha, setAlpha] = useLocalState("alpha", 1.0);
 
   const hexColor = rgbToHex(colorR, colorG, colorB);
 
@@ -236,8 +236,8 @@ function UiTab(props: any, context: any) {
   );
 }
 
-function PreferencesTab(props: any, context: any) {
-  const { data } = useBackend<InputData>(context);
+function PreferencesTab(props: any) {
+  const { data } = useBackend<InputData>();
   const preferencesPerCategory = {};
 
   for (const preference of data.preferences) {
@@ -263,10 +263,9 @@ function PreferencesTab(props: any, context: any) {
     });
 }
 
-export function PlayerSettings(props: any, context: any) {
-  const { getTheme } = useBackend<InputData>(context);
+export function PlayerSettings(props: any) {
+  const { getTheme } = useBackend<InputData>();
   const [selectedTab, setSelectedTab] = useLocalState(
-    context,
     "selectedTab",
     TABS[0].name
   );
@@ -285,7 +284,7 @@ export function PlayerSettings(props: any, context: any) {
             </Tabs.Tab>
           ))}
         </Tabs>
-        {TABS.find((tab) => tab.name === selectedTab).render(props, context)}
+        {TABS.find((tab) => tab.name === selectedTab)?.render(props)}
       </Window.Content>
     </Window>
   );

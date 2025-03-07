@@ -39,8 +39,8 @@ interface InputData {
   ready: number;
 }
 
-const product = (product: Product, context: any) => {
-  const { act } = useBackend<InputData>(context);
+const product = (product: Product) => {
+  const { act } = useBackend<InputData>();
   const outOfStock = product.amount === 0;
   const isFree = product.price === 0;
   const capitalizedName =
@@ -82,8 +82,8 @@ const product = (product: Product, context: any) => {
   );
 };
 
-const pay = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+const pay = (props: any) => {
+  const { act, data } = useBackend<InputData>();
   const { payment } = data;
 
   return (
@@ -144,8 +144,8 @@ const vendingProgress = () => {
   );
 };
 
-export const Vending = (props: any, context: any) => {
-  const { act, data, getTheme } = useBackend<InputData>(context);
+export const Vending = (props: any) => {
+  const { act, data, getTheme } = useBackend<InputData>();
   const { products, mode, ready } = data;
 
   return (
@@ -175,9 +175,9 @@ export const Vending = (props: any, context: any) => {
             onClick={() => act("remove_coin")}
           />
         )}
-        {products.map((value, i) => product(value, context))}
+        {products.map((value, i) => product(value))}
       </Window.Content>
-      {mode === 1 && pay(props, context)}
+      {mode === 1 && pay(props)}
       {!ready && vendingProgress()}
     </Window>
   );

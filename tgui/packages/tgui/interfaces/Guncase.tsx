@@ -15,8 +15,8 @@ interface Data {
   possibleGuns: GunData[];
 }
 
-export const Guncase = (props: any, context: any) => {
-  const { act, data } = useBackend<Data>(context);
+export const Guncase = (props: any) => {
+  const { act, data } = useBackend<Data>();
 
   return (
     <Window width={300} height={345}>

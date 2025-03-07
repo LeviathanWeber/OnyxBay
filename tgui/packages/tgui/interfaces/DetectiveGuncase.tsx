@@ -15,8 +15,8 @@ interface Data extends LockData {
   possibleGuns: GunData[];
 }
 
-export const DetectiveGuncase = (props: any, context: any) => {
-  const { act, data } = useBackend<Data>(context);
+export const DetectiveGuncase = (props: any) => {
+  const { act, data } = useBackend<Data>();
 
   return (
     <Window width={430} height={470}>

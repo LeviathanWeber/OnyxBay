@@ -190,8 +190,8 @@ const getDeviceName = (device: Device) => {
   }
 };
 
-const summaryTab = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+const summaryTab = (props: any) => {
+  const { act, data } = useBackend<InputData>();
 
   return (
     <Stack vertical width="100%">
@@ -282,14 +282,14 @@ const summaryTab = (props: any, context: any) => {
 
         <Divider />
 
-        {techsTable(data.techs, context)}
+        {techsTable(data.techs)}
       </Stack.Item>
     </Stack>
   );
 };
 
-const techsTable = (techs: OriginTech[] | Tech[], context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+const techsTable = (techs: OriginTech[] | Tech[]) => {
+  const { act, data } = useBackend<InputData>();
   const saveButton = (tech: Tech) => {
     return data.disk?.data ? (
       <Button.Confirm
@@ -346,8 +346,8 @@ const techsTable = (techs: OriginTech[] | Tech[], context: any) => {
   );
 };
 
-const destructorTab = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+const destructorTab = (props: any) => {
+  const { act, data } = useBackend<InputData>();
   const destructor = data.devices.filter((d) => d.name === "destructor")[0];
 
   if (!destructor.connected) {
@@ -389,7 +389,7 @@ const destructorTab = (props: any, context: any) => {
         </LabeledList.Item>
         <LabeledList.Item label="Technology">
           {item && destructor.data.techs.length
-            ? techsTable(destructor.data.techs, context)
+            ? techsTable(destructor.data.techs)
             : "Nothing"}
         </LabeledList.Item>
       </LabeledList>
@@ -397,8 +397,8 @@ const destructorTab = (props: any, context: any) => {
   );
 };
 
-const device = (device: Device, context: any) => {
-  const { act } = useBackend<InputData>(context);
+const device = (device: Device) => {
+  const { act } = useBackend<InputData>();
   const { storage } = device.data;
   const material = storage?.material;
   const chemical = storage?.chemical;
@@ -595,35 +595,33 @@ const device = (device: Device, context: any) => {
           </Table>
         </Box>
       </Stack.Item>
-      <Stack.Item width="33.3%">{queue(device, context)}</Stack.Item>
+      <Stack.Item width="33.3%">{queue(device)}</Stack.Item>
     </Stack>
   );
 };
 
-const designs = (device: Device, context: any) => {
+const designs = (device: Device) => {
   const MAX_PER_PAGE = 10;
-  const { act, data } = useBackend<InputData>(context);
+  const { act, data } = useBackend<InputData>();
   const { designs, filters } = device.data;
   const [searchQuery, setSearchQuery] = useLocalState(
-    context,
     "searchQuery",
     null
   );
 
   const [currentPage, setCurrentPage] = useLocalState(
-    context,
     `currentPage${device.name}`,
     1
   );
 
   const categories = ["All"].concat(filters);
-  const [currentFilter, setFilter] = useLocalState(context, "filter", "All");
+  const [currentFilter, setFilter] = useLocalState("filter", "All");
 
   if (!categories.find((c) => c === currentFilter)) {
     setFilter("All");
   }
 
-  let found: Design[] = designs;
+  let found: Design[] | undefined = designs;
 
   if (searchQuery !== null) {
     found = found?.filter((design, _) => design.name.search(searchQuery) >= 0);
@@ -635,11 +633,10 @@ const designs = (device: Device, context: any) => {
     );
   }
 
-  const paginator = (designs: Design[], id: string, context: any) => {
+  const paginator = (designs: Design[], id: string) => {
     const numberWithinRange = (min: number, n: number, max: number) =>
       Math.min(Math.max(n, min), max);
     const [currentPage, setCurrentPage] = useLocalState(
-      context,
       `currentPage${id}`,
       1
     );
@@ -744,7 +741,7 @@ const designs = (device: Device, context: any) => {
         })}
       </Flex>
       <Divider />
-      {paginator(found, device.name, context)}
+      {paginator(found, device.name)}
       <Divider />
       <Table>
         <Table.Row className="candystripe">
@@ -852,8 +849,8 @@ const designs = (device: Device, context: any) => {
   );
 };
 
-const queue = (device: Device, context: any) => {
-  const { act } = useBackend<InputData>(context);
+const queue = (device: Device) => {
+  const { act } = useBackend<InputData>();
   const { queue } = device.data;
 
   const emptyRow = () => {
@@ -915,8 +912,8 @@ const queue = (device: Device, context: any) => {
   );
 };
 
-const protolatheTab = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+const protolatheTab = (props: any) => {
+  const { act, data } = useBackend<InputData>();
   const protolathe = data.devices.filter((d) => d.name === "protolathe")[0];
 
   if (!protolathe.connected) {
@@ -937,14 +934,14 @@ const protolatheTab = (props: any, context: any) => {
       />
 
       <Divider />
-      {device(protolathe, context)}
-      {designs(protolathe, context)}
+      {device(protolathe)}
+      {designs(protolathe)}
     </>
   );
 };
 
-const imprinterTab = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+const imprinterTab = (props: any) => {
+  const { act, data } = useBackend<InputData>();
   const imprinter = data.devices.filter((d) => d.name === "imprinter")[0];
 
   if (!imprinter.connected) {
@@ -964,8 +961,8 @@ const imprinterTab = (props: any, context: any) => {
         onClick={() => act("disconnect", { thing: "imprinter" })}
       />
       <Divider />
-      {device(imprinter, context)}
-      {designs(imprinter, context)}
+      {device(imprinter)}
+      {designs(imprinter)}
     </>
   );
 };
@@ -973,7 +970,7 @@ const imprinterTab = (props: any, context: any) => {
 interface Tab {
   name: string;
   icon: string;
-  render: (props: any, context: any) => void;
+  render: (props: any) => void;
   action?: (act: (action: string, payload: object) => void) => void | null;
 }
 
@@ -1003,10 +1000,9 @@ const TABS: Tab[] = [
   },
 ];
 
-export const RDConsole = (props: any, context: any) => {
-  const { act, data, getTheme } = useBackend<InputData>(context);
+export const RDConsole = (props: any) => {
+  const { act, data, getTheme } = useBackend<InputData>();
   const [selectedTab, setSelectedTab] = useLocalState(
-    context,
     "selectedTab",
     TABS[0].name
   );
@@ -1040,7 +1036,6 @@ export const RDConsole = (props: any, context: any) => {
           </Tabs>
           {TABS.filter((tab) => tab.name === selectedTab)[0].render(
             props,
-            context
           )}
         </Section>
       </Window.Content>

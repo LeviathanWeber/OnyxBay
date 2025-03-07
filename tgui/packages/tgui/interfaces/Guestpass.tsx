@@ -39,18 +39,17 @@ interface Data {
   selectedAccess: string;
 }
 
-export const Guestpass = (props: any, context: any) => {
-  const { act, data } = useBackend<Data>(context);
+export const Guestpass = (props: any) => {
+  const { act, data } = useBackend<Data>();
 
   const [currentPage, setCurrentPage] = useLocalState(
-    context,
     "currentPage",
     0
   );
 
-  const [name, setName] = useLocalState(context, "name", "");
-  const [reason, setReason] = useLocalState(context, "reason", "");
-  const [duration, setDuration] = useLocalState(context, "duration", 0);
+  const [name, setName] = useLocalState("name", "");
+  const [reason, setReason] = useLocalState("reason", "");
+  const [duration, setDuration] = useLocalState("duration", 0);
 
   return (
     <Window width={435} height={675}>
@@ -228,10 +227,9 @@ const diffMap = {
   },
 };
 
-const AirlockAccessList = (props: any, context: any) => {
-  const { act, data } = useBackend<Data>(context);
+const AirlockAccessList = (props: any) => {
+  const { act, data } = useBackend<Data>();
   const [selectedRegionName, setSelectedRegionName] = useLocalState(
-    context,
     "accessName",
     data.regions[0]?.name
   );

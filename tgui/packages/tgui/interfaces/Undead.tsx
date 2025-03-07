@@ -24,8 +24,8 @@ type InputData = {
   points: number;
 } & StaticData;
 
-const PowerIcon = (props: Power, context: any) => {
-  const { data } = useBackend<InputData>(context);
+const PowerIcon = (props: Power) => {
+  const { data } = useBackend<InputData>();
   const { icons } = data;
 
   const backgroundImage = props.owned
@@ -43,8 +43,8 @@ const PowerIcon = (props: Power, context: any) => {
     );
   };
 
-const PowerCard = (props: Power, context: any) => {
-  const { data, act } = useBackend<InputData>(context);
+const PowerCard = (props: Power) => {
+  const { data, act } = useBackend<InputData>();
 
   const buyPower = (powerName) => {
     act("mutate", {
@@ -58,7 +58,7 @@ const PowerCard = (props: Power, context: any) => {
       direction="column"
     >
       <Flex align="center">
-        {PowerIcon(props, context)}
+        {PowerIcon(props)}
         <span className="PowerName">{props.name}</span>
       </Flex>
       <p>
@@ -83,8 +83,8 @@ const PowerCard = (props: Power, context: any) => {
   );
 };
 
-export const Undead = (props: any, context: any) => {
-  const { data } = useBackend<InputData>(context);
+export const Undead = (props: any) => {
+  const { data } = useBackend<InputData>();
   return (
     <Window theme="changeling" width={412} height={500}>
       <link rel="stylesheet" type="text/css" href="exocet.css" />
@@ -98,7 +98,7 @@ export const Undead = (props: any, context: any) => {
             direction="column"
             justify="space-between"
           >
-          {data.powers.map((p) => PowerCard(p, context))}
+          {data.powers.map((p) => PowerCard(p))}
           </Flex>
         </Flex>
       </Window.Content>

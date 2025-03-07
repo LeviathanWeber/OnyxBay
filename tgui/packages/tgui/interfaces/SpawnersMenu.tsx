@@ -17,8 +17,8 @@ type InputData = {
   spawners: Spawner[];
 };
 
-function SpawnersList(props: Spawner[], context: any) {
-  const { act } = useBackend<InputData>(context);
+function SpawnersList(props: Spawner[]) {
+  const { act } = useBackend<InputData>();
 
   return (
     <Stack vertical>
@@ -62,13 +62,13 @@ function SpawnersList(props: Spawner[], context: any) {
   );
 }
 
-export function SpawnersMenu(props: any, context: any) {
-  const { getTheme, data, act } = useBackend<InputData>(context);
+export function SpawnersMenu(props: any) {
+  const { getTheme, data, act } = useBackend<InputData>();
   return (
     <Window theme={getTheme("neutral")} width={700} height={525}>
       <Window.Content scrollable>
         {data.spawners.length ? (
-          SpawnersList(data.spawners, context)
+          SpawnersList(data.spawners)
         ) : (
           <NoticeBox>No suitable for possess targets were found!</NoticeBox>
         )}

@@ -3,8 +3,8 @@ import { useBackend } from "../backend";
 import { Button, Section, NumberInput, Flex } from "../components";
 import { Window } from "../layouts";
 
-export const Signaler = (props, context) => {
-  const { act } = useBackend(context);
+export const Signaler = (props) => {
+  const { act } = useBackend();
   return (
     <Window width={340} height={142}>
       <Window.Content>
@@ -24,9 +24,9 @@ export const Signaler = (props, context) => {
   );
 };
 
-export const SignalerContent = (props, context) => {
+export const SignalerContent = (props) => {
   const { children } = props;
-  const { act, data } = useBackend(context);
+  const { act, data } = useBackend();
   const { code, frequency, maxFrequency, minFrequency } = data;
 
   return (

@@ -5,14 +5,14 @@
  */
 
 export const debugReducer = (state = {}, action) => {
-  const { type } = action;
-  if (type === "debug/toggleKitchenSink") {
+  const { type, payload } = action;
+  if (type === 'debug/toggleKitchenSink') {
     return {
       ...state,
       kitchenSink: !state.kitchenSink,
     };
   }
-  if (type === "debug/toggleDebugLayout") {
+  if (type === 'debug/toggleDebugLayout') {
     return {
       ...state,
       debugLayout: !state.debugLayout,

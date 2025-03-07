@@ -4,17 +4,8 @@
  * @license MIT
  */
 
-import {
-  addChatPage,
-  changeChatPage,
-  loadChat,
-  removeChatPage,
-  toggleAcceptedType,
-  updateChatPage,
-  updateMessageCount,
-  changeScrollTracking,
-} from "./actions";
-import { canPageAcceptType, createMainPage } from "./model";
+import { addChatPage, changeChatPage, loadChat, moveChatPageLeft, moveChatPageRight, removeChatPage, toggleAcceptedType, updateChatPage, updateMessageCount, changeScrollTracking } from './actions';
+import { canPageAcceptType, createMainPage } from './model';
 
 const mainPage = createMainPage();
 
@@ -35,10 +26,23 @@ export const chatReducer = (state = initialState, action) => {
     if (payload?.version !== state.version) {
       return state;
     }
+    // Enable any filters that are not explicitly set, that are
+    // enabled by default on the main page.
+    // NOTE: This mutates acceptedTypes on the state.
+    for (let id of Object.keys(payload.pageById)) {
+      const page = payload.pageById[id];
+      const filters = page.acceptedTypes;
+      const defaultFilters = mainPage.acceptedTypes;
+      for (let type of Object.keys(defaultFilters)) {
+        if (filters[type] === undefined) {
+          filters[type] = defaultFilters[type];
+        }
+      }
+    }
     // Reset page message counts
     // NOTE: We are mutably changing the payload on the assumption
     // that it is a copy that comes straight from the web storage.
-    for (const id of Object.keys(payload.pageById)) {
+    for (let id of Object.keys(payload.pageById)) {
       const page = payload.pageById[id];
       page.unreadCount = 0;
     }
@@ -71,9 +75,9 @@ export const chatReducer = (state = initialState, action) => {
     const pages = state.pages.map((id) => state.pageById[id]);
     const currentPage = state.pageById[state.currentPageId];
     const nextPageById = { ...state.pageById };
-    for (const page of pages) {
+    for (let page of pages) {
       let unreadCount = 0;
-      for (const type of Object.keys(countByType)) {
+      for (let type of Object.keys(countByType)) {
         // Message does not belong here
         if (!canPageAcceptType(page, type)) {
           continue;
@@ -172,6 +176,52 @@ export const chatReducer = (state = initialState, action) => {
     }
     if (!nextState.currentPageId || nextState.currentPageId === pageId) {
       nextState.currentPageId = nextState.pages[0];
+    }
+    return nextState;
+  }
+  if (type === moveChatPageLeft.type) {
+    const { pageId } = payload;
+    const nextState = {
+      ...state,
+      pages: [...state.pages],
+      pageById: {
+        ...state.pageById,
+      },
+    };
+    const tmpPage = nextState.pageById[pageId];
+    const fromIndex = nextState.pages.indexOf(tmpPage.id);
+    const toIndex = fromIndex - 1;
+    // don't ever move leftmost page
+    if (fromIndex > 0) {
+      // don't ever move anything to the leftmost page
+      if (toIndex > 0) {
+        const tmp = nextState.pages[fromIndex];
+        nextState.pages[fromIndex] = nextState.pages[toIndex];
+        nextState.pages[toIndex] = tmp;
+      }
+    }
+    return nextState;
+  }
+  if (type === moveChatPageRight.type) {
+    const { pageId } = payload;
+    const nextState = {
+      ...state,
+      pages: [...state.pages],
+      pageById: {
+        ...state.pageById,
+      },
+    };
+    const tmpPage = nextState.pageById[pageId];
+    const fromIndex = nextState.pages.indexOf(tmpPage.id);
+    const toIndex = fromIndex + 1;
+    // don't ever move leftmost page
+    if (fromIndex > 0) {
+      // don't ever move anything out of the array
+      if (toIndex < nextState.pages.length) {
+        const tmp = nextState.pages[fromIndex];
+        nextState.pages[fromIndex] = nextState.pages[toIndex];
+        nextState.pages[toIndex] = tmp;
+      }
     }
     return nextState;
   }

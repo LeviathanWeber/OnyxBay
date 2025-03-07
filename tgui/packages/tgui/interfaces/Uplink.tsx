@@ -73,8 +73,8 @@ enum MenuPage {
   ExploitableMenu,
 }
 
-export const Uplink = (props: InputData, context: any) => {
-  const { data } = useBackend<InputData>(context);
+export const Uplink = (props: InputData) => {
+  const { data } = useBackend<InputData>();
   const { telecrystals } = data;
   return (
     <Window width={620} height={580} theme="syndicate">
@@ -85,27 +85,23 @@ export const Uplink = (props: InputData, context: any) => {
   );
 };
 
-export const GenericUplink = (props: any, context: any) => {
+export const GenericUplink = (props: any) => {
   const { currencyAmount = 0, currencySymbol = "cr" } = props;
-  const { act, data } = useBackend<InputData>(context);
-  const [searchText, setSearchText] = useLocalState(context, "searchText", "");
+  const { act, data } = useBackend<InputData>();
+  const [searchText, setSearchText] = useLocalState("searchText", "");
   const [currentPage, setCurrentPage] = useLocalState(
-    context,
     "currentPage",
     0
   );
   const [compactMode, setCompactMode] = useLocalState(
-    context,
     "compactMode",
     false
   );
   const [selectedItemCategory, setSelectedItemCategory] = useLocalState(
-    context,
     "itemCategory",
     data.itemCategories[0]?.name
   );
   const [selectedContractCategory, setSelectedContractCategory] = useLocalState(
-    context,
     "contractCategory",
     data.contractCategories[0]?.name
   );
@@ -238,7 +234,7 @@ interface UplinkMenuProps {
   onItemCategorySelect: (category: string) => void;
 }
 
-const UplinkMenu = (props: UplinkMenuProps, context: any) => {
+const UplinkMenu = (props: UplinkMenuProps) => {
   const {
     categories,
     searchText,
@@ -299,11 +295,10 @@ interface ItemListProps {
   currentItems: Item[];
 }
 
-const ItemList = (props: ItemListProps, context: any) => {
+const ItemList = (props: ItemListProps) => {
   const { compactMode, currencyAmount, currencySymbol, currentItems } = props;
-  const { act } = useBackend(context);
+  const { act } = useBackend();
   const [hoveredItem, setHoveredItem] = useLocalState<Item>(
-    context,
     "hoveredItem",
     null
   );
@@ -383,7 +378,7 @@ interface ContractMenuProps {
   onContractCatgorySelect: (category: string) => void;
 }
 
-const ContractsMenu = (props: ContractMenuProps, context: any) => {
+const ContractsMenu = (props: ContractMenuProps) => {
   const {
     contractCategories,
     selectedContractCategory,
@@ -436,8 +431,8 @@ interface ExploitableMenuProps {
   selectedExploit: ExploitData;
 }
 
-const ExploitableMenu = (props: ExploitableMenuProps, context: any) => {
-  const { act } = useBackend<InputData>(context);
+const ExploitableMenu = (props: ExploitableMenuProps) => {
+  const { act } = useBackend<InputData>();
   const { exploits, selectedExploit } = props;
   const rawHtml = {
     __html: selectedExploit["Exploitable Information"],

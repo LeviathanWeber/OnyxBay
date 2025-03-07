@@ -24,8 +24,8 @@ type Data = {
   handle: boolean;
 };
 
-export const DisposalUnit = (props: any, context: any) => {
-  const { act, data } = useBackend<Data>(context);
+export const DisposalUnit = (props: any) => {
+  const { act, data } = useBackend<Data>();
   const { mode, pressure, isAi, panel, eject, handle } = data;
 
   let modeColor = MODE2COLOR[panel ? "Panel" : mode];

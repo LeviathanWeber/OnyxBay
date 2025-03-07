@@ -20,8 +20,8 @@ interface InputData {
   lockable: number;
 }
 
-export const AirlockElectronics = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+export const AirlockElectronics = (props: any) => {
+  const { act, data } = useBackend<InputData>();
   const regions = data.regions || [];
   const oneAccess = data.oneAccess;
   let accesses: Access[] = [];
@@ -41,8 +41,8 @@ export const AirlockElectronics = (props: any, context: any) => {
   );
 };
 
-export const AirlockMainSection = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+export const AirlockMainSection = (props: any) => {
+  const { act, data } = useBackend<InputData>();
   const regions = data.regions || [];
   const oneAccess = data.oneAccess;
   let accesses: Access[] = [];
@@ -88,7 +88,7 @@ const diffMap = {
   },
 };
 
-const AirlockAccessList = (props: any, context: any) => {
+const AirlockAccessList = (props: any) => {
   const {
     regions = [],
     selectedList = [],
@@ -99,7 +99,6 @@ const AirlockAccessList = (props: any, context: any) => {
     accessMod: (id: number) => void;
   } = props;
   const [selectedRegionName, setSelectedRegionName] = useLocalState(
-    context,
     "accessName",
     regions[0]?.name
   );

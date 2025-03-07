@@ -22,8 +22,8 @@ interface InputData {
   currentLanguage: string;
 }
 
-export const LanguageMenu = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+export const LanguageMenu = (props: any) => {
+  const { act, data } = useBackend<InputData>();
   const { isAdmin, isSilicon, languages, languagePrefix, currentLanguage } =
     data;
 
@@ -73,7 +73,7 @@ interface LanguageButtonProps {
   onChoice: (language_key: string) => void;
 }
 
-const LanguageButton = (props: LanguageButtonProps, context: any) => {
+const LanguageButton = (props: LanguageButtonProps) => {
   const {
     prefix,
     selected,

@@ -13,7 +13,7 @@ import {
 } from "../components";
 import { Window } from "../layouts";
 
-export const DroneConsole = (props, context) => {
+export const DroneConsole = (props) => {
   return (
     <Window width={420} height={500}>
       <Window.Content>
@@ -47,8 +47,8 @@ interface DroneConsoleData {
   ping_cd: number;
 }
 
-const Fabricator = (props, context) => {
-  const { act, data } = useBackend<DroneConsoleData>(context);
+const Fabricator = (props) => {
+  const { act, data } = useBackend<DroneConsoleData>();
   const { drone_fab, fab_power, drone_prod, drone_progress } = data;
 
   let FabDetected = () => {
@@ -75,7 +75,7 @@ const Fabricator = (props, context) => {
     } else {
       return (
         <NoticeBox textAlign="center" danger={1}>
-          <Stack inline={1} direction="column">
+          <Stack inline={true} direction="column">
             <Stack.Item>FABRICATOR NOT DETECTED.</Stack.Item>
             <Stack.Item>
               <Button
@@ -107,8 +107,8 @@ const Fabricator = (props, context) => {
   );
 };
 
-const DroneList = (props: any, context: any) => {
-  const { act, data } = useBackend<DroneConsoleData>(context);
+const DroneList = (props: any) => {
+  const { act, data } = useBackend<DroneConsoleData>();
   const { drones, area_list, selected_area, ping_cd } = data;
 
   let status = (stat, client) => {

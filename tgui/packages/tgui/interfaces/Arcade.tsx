@@ -36,8 +36,8 @@ const enemy = (enemy: Enemy) => {
   );
 };
 
-const player = (player: Player, context: any) => {
-  const { act } = useBackend<InputData>(context);
+const player = (player: Player) => {
+  const { act } = useBackend<InputData>();
 
   return (
     <Flex className="Player" direction="column">
@@ -64,8 +64,8 @@ const player = (player: Player, context: any) => {
   );
 };
 
-const game = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+const game = (props: any) => {
+  const { act, data } = useBackend<InputData>();
 
   if (data.is_gameover) {
     return (
@@ -91,14 +91,14 @@ const game = (props: any, context: any) => {
         {data.message}
       </Flex.Item>
       <Flex.Item height="100%" width="100%">
-        {player(data.player, context)}
+        {player(data.player)}
       </Flex.Item>
     </Flex>
   );
 };
 
-export const Arcade = (props: any, context: any) => {
-  const { data } = useBackend<InputData>(context);
+export const Arcade = (props: any) => {
+  const { data } = useBackend<InputData>();
 
   return (
     <Window height={460} width={400} theme="arcade">
@@ -106,7 +106,7 @@ export const Arcade = (props: any, context: any) => {
         <Flex direction="column" align="stretch" height="100%">
           <Flex.Item className="ArcadeTitle">{data.title}</Flex.Item>
           <Flex.Item height="100%" grow className="Display">
-            {game(props, context)}
+            {game(props)}
           </Flex.Item>
         </Flex>
       </Window.Content>

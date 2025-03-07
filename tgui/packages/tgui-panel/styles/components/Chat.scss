@@ -3,27 +3,13 @@
  * SPDX-License-Identifier: MIT
  */
 
-@use 'sass:math';
 @use 'sass:color';
+@use 'sass:math';
 @use '~tgui/styles/base.scss';
 @use '~tgui/styles/colors.scss';
 
 $text-color: #abc6ec !default;
 $color-bg-section: base.$color-bg-section !default;
-
-#imageContainer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
-
-#chatContainer {
-  z-index: 1;
-}
 
 .Chat {
   color: $text-color;

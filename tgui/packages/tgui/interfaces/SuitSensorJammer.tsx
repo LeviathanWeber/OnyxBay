@@ -21,8 +21,8 @@ interface InputData {
   total_cost: string;
 }
 
-export const SuitSensorJammer = (props, context) => {
-  const { act, data } = useBackend<InputData>(context);
+export const SuitSensorJammer = (props) => {
+  const { act, data } = useBackend<InputData>();
   const charge = data.current_charge / data.max_charge;
   const methods = data.methods || [];
 

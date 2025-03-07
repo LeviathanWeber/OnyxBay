@@ -52,14 +52,14 @@
       "cwd": "${workspaceFolder}"
     },
     {
-      "command": "npm run dev",
+      "command": "npm run tgui:dev",
       "name": "TGUI Dev",
       "request": "launch",
       "type": "node-terminal",
       "cwd": "${workspaceFolder}/tgui"
     },
     {
-      "command": "npm run build",
+      "command": "npm run tgui:build",
       "name": "TGUI Build",
       "request": "launch",
       "type": "node-terminal",

@@ -4,8 +4,8 @@ import { Button, Section, NumberInput, Flex } from "../components";
 import { Window } from "../layouts";
 import { SignalerContent } from "./Signaler";
 
-export const Holochip = (props, context) => {
-  const { act, data } = useBackend(context)
+export const Holochip = (props) => {
+  const { act, data } = useBackend()
   return (
     <Window width={340} height={142}>
       <Window.Content>

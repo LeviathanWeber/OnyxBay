@@ -20,7 +20,7 @@ type InputData = {
 
 type FilterState = "exclude" | "none" | "include";
 
-function TargetStatus(props: { target: Target }, context: any) {
+function TargetStatus(props: { target: Target }) {
   const { isMob, isGhost, hasClient } = props.target;
 
   return (
@@ -38,7 +38,6 @@ function FilterButton(
     name: string;
     onClick: (newState: boolean) => void;
   },
-  context: any
 ) {
   let icon: string;
 
@@ -67,23 +66,20 @@ function nextFilterState(current: FilterState): FilterState {
   }
 }
 
-export function FollowPanel(props: any, context: any) {
-  const { getTheme, data, act } = useBackend<InputData>(context);
+export function FollowPanel(props: any) {
+  const { getTheme, data, act } = useBackend<InputData>();
 
   const [ghostFilter, setGhostFilter] = useLocalState<FilterState>(
-    context,
     "ghostFilter",
     "none"
   );
 
   const [clientFilter, setClientFilter] = useLocalState<FilterState>(
-    context,
     "clientFilter",
     "none"
   );
 
   const [mobFilter, setMobFilter] = useLocalState<FilterState>(
-    context,
     "mobFilter",
     "none"
   );

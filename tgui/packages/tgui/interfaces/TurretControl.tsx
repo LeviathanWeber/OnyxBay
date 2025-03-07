@@ -24,12 +24,11 @@ interface InputData {
   targetingData: TargetingData;
 }
 
-export const TurretControl = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+export const TurretControl = (props: any) => {
+  const { act, data } = useBackend<InputData>();
   const { isEnabled, turrets, targetingData } = data;
 
   const [settingsOpen, setSettingsOpen] = useLocalState(
-    context,
     "settingsOpen",
     false
   );

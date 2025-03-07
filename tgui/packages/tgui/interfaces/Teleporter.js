@@ -2,8 +2,8 @@ import { useBackend, useLocalState } from "../backend";
 import { Button, Section, Flex, NoticeBox, Input } from "../components";
 import { Window } from "../layouts";
 
-export const Teleporter = (props, context) => {
-  const { act, data } = useBackend(context);
+export const Teleporter = (props) => {
+  const { act, data } = useBackend();
   return (
     <Window width={300} height={140}>
       <Window.Content>
@@ -13,8 +13,8 @@ export const Teleporter = (props, context) => {
   );
 };
 
-const UiData = (props, context) => {
-  const { act, data } = useBackend(context);
+const UiData = (props) => {
+  const { act, data } = useBackend();
   const { id, gate, target, mode, engaged, panel } = data;
 
   if (!gate) return <NoticeBox>Error: No Gate connected.</NoticeBox>;

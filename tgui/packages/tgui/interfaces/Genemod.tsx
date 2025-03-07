@@ -29,8 +29,8 @@ type Data = {
   storedGenes: string[];
 };
 
-export const Genemod = (props: any, context: any) => {
-  const { act, data, getTheme } = useBackend<Data>(context);
+export const Genemod = (props: any) => {
+  const { act, data, getTheme } = useBackend<Data>();
   const {
     hasDisk,
     hasPack,
@@ -114,7 +114,6 @@ const GeneInfo = (
     onGeneScramble,
     onGeneWipe,
   }: GeneInfo,
-  _context: any
 ) => {
   return (
     <Section fill>
@@ -163,7 +162,6 @@ const PackDisplay = (
     onGeneStore,
     onPackEject,
   }: PackDisplayProps,
-  _context: any
 ) => {
   return (
     <Stack fill vertical>
@@ -228,7 +226,6 @@ const DiskDisplay = (
     onApplyAll,
     onEject,
   }: DiskDisplayProps,
-  _context: any
 ) => {
   return (
     <Stack fill vertical>

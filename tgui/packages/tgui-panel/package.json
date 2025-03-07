@@ -1,13 +1,15 @@
 {
   "private": true,
   "name": "tgui-panel",
-  "version": "4.3.0",
+  "version": "5.0.0",
   "dependencies": {
-    "common": "4.3.0",
-    "dompurify": "2.x.x",
-    "inferno": "7.x.x",
-    "tgui": "4.3.0",
-    "tgui-dev-server": "4.3.0",
-    "tgui-polyfill": "4.3.0"
+    "@types/react": "^18.2.39",
+    "common": "5.0.0",
+    "dompurify": "^2.5.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tgui": "5.0.0",
+    "tgui-dev-server": "5.0.0",
+    "tgui-polyfill": "5.0.0"
   }
 }

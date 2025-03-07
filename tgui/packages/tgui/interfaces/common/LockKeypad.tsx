@@ -7,8 +7,8 @@ import { Box, Button, Grid } from "../../components";
 // and hand made width sets that changing pretty much anything
 // is going to require a lot of tweaking it get it looking correct again
 // I'm sorry, but it looks bangin
-export const LockKeypad = (props: any, context: any) => {
-  const { act } = useBackend(context);
+export const LockKeypad = (props: any) => {
+  const { act } = useBackend();
   const keypadKeys = [
     ["1", "4", "7", "C"],
     ["2", "5", "8", "0"],

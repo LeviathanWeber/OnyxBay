@@ -24,8 +24,8 @@ interface InputData {
   trackingImplants: Implant[];
 }
 
-export const PrisonerImplantManager = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+export const PrisonerImplantManager = (props: any) => {
+  const { act, data } = useBackend<InputData>();
   const { trackingImplants, chemImplants } = data;
 
   return (

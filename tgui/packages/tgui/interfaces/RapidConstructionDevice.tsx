@@ -37,8 +37,8 @@ type Design = {
   icon: string;
 };
 
-export const MatterItem = (props: any, context: any) => {
-  const { data } = useBackend<Data>(context);
+export const MatterItem = (props: any) => {
+  const { data } = useBackend<Data>();
   const { matterLeft } = data;
   return (
     <LabeledList.Item label="Units Left">
@@ -47,8 +47,8 @@ export const MatterItem = (props: any, context: any) => {
   );
 };
 
-const CategoryItem = (props: any, context: any) => {
-  const { act, data } = useBackend<Data>(context);
+const CategoryItem = (props: any) => {
+  const { act, data } = useBackend<Data>();
   const { root_categories = [], selected_root } = data;
   return (
     <LabeledList.Item label="Category">
@@ -65,8 +65,8 @@ const CategoryItem = (props: any, context: any) => {
   );
 };
 
-export const InfoSection = (props: any, context: any) => {
-  const { data } = useBackend<Data>(context);
+export const InfoSection = (props: any) => {
+  const { data } = useBackend<Data>();
 
   return (
     <Section>
@@ -78,11 +78,10 @@ export const InfoSection = (props: any, context: any) => {
   );
 };
 
-const DesignSection = (props: any, context: any) => {
-  const { act, data } = useBackend<Data>(context);
+const DesignSection = (props: any) => {
+  const { act, data } = useBackend<Data>();
   const { categories = [], selected_category, selected_design } = data;
   const [categoryName, setCategoryName] = useLocalState(
-    context,
     "false",
     selected_category
   );
@@ -130,8 +129,8 @@ const DesignSection = (props: any, context: any) => {
   );
 };
 
-const ConfigureSection = (props: any, context: any) => {
-  const { data } = useBackend<Data>(context);
+const ConfigureSection = (props: any) => {
+  const { data } = useBackend<Data>();
   const { selected_root } = data;
 
   return (
@@ -145,7 +144,7 @@ const ConfigureSection = (props: any, context: any) => {
   );
 };
 
-export const RapidConstructionDevice = (props: any, context: any) => {
+export const RapidConstructionDevice = (props: any) => {
   return (
     <Window width={450} height={590}>
       <Window.Content>

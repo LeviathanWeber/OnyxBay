@@ -44,8 +44,8 @@ type InputData = {
   medical_data: MedicalData;
 };
 
-function Scan(props: MedicalData, context: any) {
-  const { act } = useBackend<InputData>(context);
+function Scan(props: MedicalData) {
+  const { act } = useBackend<InputData>();
 
   return (
     <Flex direction="row">
@@ -245,14 +245,14 @@ function Scan(props: MedicalData, context: any) {
   );
 }
 
-export function OperatingTable(props: any, context: any) {
-  const { data } = useBackend<InputData>(context);
+export function OperatingTable(props: any) {
+  const { data } = useBackend<InputData>();
 
   return (
     <Window theme="operating" width={800} height={710}>
       <Window.Content scrollable>
         {data.medical_data ? (
-          Scan(data.medical_data, context)
+          Scan(data.medical_data)
         ) : (
           <NoticeBox>Operating Table is empty.</NoticeBox>
         )}

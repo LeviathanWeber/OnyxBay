@@ -29,8 +29,8 @@ interface MinesweeperData {
   timeLeft: string;
 }
 
-export const Minesweeper = (props: MinesweeperData, context) => {
-  const { act, data } = useBackend<MinesweeperData>(context);
+export const Minesweeper = (props: MinesweeperData) => {
+  const { act, data } = useBackend<MinesweeperData>();
   const { width, height, grid, mines, flags, difficulty, emagged, timeLeft } =
     data;
 

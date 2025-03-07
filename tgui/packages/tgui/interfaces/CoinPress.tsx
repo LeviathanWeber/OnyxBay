@@ -16,8 +16,8 @@ type InputData = {
   inserted_materials: Material[];
 };
 
-export const CoinPress = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+export const CoinPress = (props: any) => {
+  const { act, data } = useBackend<InputData>();
   return (
     <Window title="Coin Press" width={169} height={275}>
       <Window.Content>
@@ -46,8 +46,8 @@ export const CoinPress = (props: any, context: any) => {
   );
 };
 
-function MaterialsList(props: any, context: any) {
-  const { act, data } = useBackend<InputData>(context);
+function MaterialsList(props: any) {
+  const { act, data } = useBackend<InputData>();
   return (
     <Stack vertical nowrap>
       {data.inserted_materials.map((material) => (

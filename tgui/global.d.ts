@@ -6,17 +6,17 @@
 
 // Webpack asset modules.
 // Should match extensions used in webpack config.
-declare module "*.png" {
+declare module '*.png' {
   const content: string;
   export default content;
 }
 
-declare module "*.jpg" {
+declare module '*.jpg' {
   const content: string;
   export default content;
 }
 
-declare module "*.svg" {
+declare module '*.svg' {
   const content: string;
   export default content;
 }
@@ -35,6 +35,16 @@ type ByondType = {
   windowId: string;
 
   /**
+   * The major version of byond.
+   */
+  BYOND_MAJOR: string;
+
+  /**
+   * The minor (build) version of byond.
+   */
+  BYOND_MINOR: string;
+
+  /**
    * True if javascript is running in BYOND.
    */
   IS_BYOND: boolean;
@@ -45,24 +55,21 @@ type ByondType = {
   TRIDENT: number | null;
 
   /**
-   * True if browser is IE8 or lower.
+   * Version of Blink engine of WebView2. Null if N/A.
    */
-  IS_LTE_IE8: boolean;
+    BLINK: number | null;
 
   /**
-   * True if browser is IE9 or lower.
+   * If `true`, unhandled errors and common mistakes result in a blue screen
+   * of death, which stops this window from handling incoming messages and
+   * closes the active instance of tgui datum if there was one.
+   *
+   * It can be defined in window.initialize() in DM, or changed in runtime
+   * here via this property to `true` or `false`.
+   *
+   * It is recommended that you keep this ON to detect hard to find bugs.
    */
-  IS_LTE_IE9: boolean;
-
-  /**
-   * True if browser is IE10 or lower.
-   */
-  IS_LTE_IE10: boolean;
-
-  /**
-   * True if browser is IE11 or lower.
-   */
-  IS_LTE_IE11: boolean;
+  strictMode: boolean;
 
   /**
    * Makes a BYOND call.
@@ -103,7 +110,7 @@ type ByondType = {
    *
    * Returns a promise with a key-value object containing all properties.
    */
-  winget(id: string | null, propName: "*"): Promise<object>;
+  winget(id: string | null, propName: '*'): Promise<object>;
 
   /**
    * Retrieves an exactly one property of the BYOND skin element,
@@ -179,4 +186,15 @@ const Byond: ByondType;
 
 interface Window {
   Byond: ByondType;
+  __store__: Store<unknown, AnyAction>;
+  __augmentStack__: (store: Store) => StackAugmentor;
+
+  // IE IndexedDB stuff.
+  msIndexedDB: IDBFactory;
+  msIDBTransaction: IDBTransaction;
+
+  // 516 byondstorage API.
+  hubStorage: Storage;
+  domainStorage: Storage;
+  serverStorage: Storage;
 }

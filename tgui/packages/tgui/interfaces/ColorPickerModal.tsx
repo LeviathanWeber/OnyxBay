@@ -4,34 +4,17 @@
  * @license MIT
  */
 
-import { Loader } from "./common/Loader";
-import { useBackend, useLocalState } from "../backend";
-import {
-  Autofocus,
-  Box,
-  Flex,
-  Section,
-  Stack,
-  Pointer,
-  NumberInput,
-  Tooltip,
-} from "../components";
-import { Window } from "../layouts";
-import { clamp } from "common/math";
-import {
-  hexToHsva,
-  HsvaColor,
-  hsvaToHex,
-  hsvaToHslString,
-  hsvaToRgba,
-  rgbaToHsva,
-  validHex,
-} from "common/color";
-import { Interaction, Interactive } from "tgui/components/Interactive";
-import { classes } from "common/react";
-import { Component, FocusEvent, FormEvent, InfernoNode } from "inferno";
-import { logger } from "tgui/logging";
-import { InputButtons } from "./common/InputButtons";
+import { Loader } from './common/Loader';
+import { useBackend, useLocalState } from '../backend';
+import { Autofocus, Box, Flex, Section, Stack, Pointer, NumberInput, Tooltip } from '../components';
+import { Window } from '../layouts';
+import { clamp } from 'common/math';
+import { hexToHsva, HsvaColor, hsvaToHex, hsvaToHslString, hsvaToRgba, rgbaToHsva, validHex } from 'common/color';
+import { Interaction, Interactive } from 'tgui/components/Interactive';
+import { classes } from 'common/react';
+import { Component, FocusEvent, FormEvent, ReactNode } from 'react';
+import { logger } from 'tgui/logging';
+import { InputButtons } from './common/InputButtons';
 
 type ColorPickerData = {
   autofocus: boolean;
@@ -44,20 +27,10 @@ type ColorPickerData = {
   default_color: string;
 };
 
-export const ColorPickerModal = (_, context) => {
-  const { data } = useBackend<ColorPickerData>(context);
-  const {
-    timeout,
-    message,
-    title,
-    autofocus,
-    default_color = "#000000",
-  } = data;
-  let [selectedColor, setSelectedColor] = useLocalState<HsvaColor>(
-    context,
-    "color_picker_choice",
-    hexToHsva(default_color)
-  );
+export const ColorPickerModal = (_) => {
+  const { data } = useBackend<ColorPickerData>();
+  const { timeout, message, title, autofocus, default_color = '#000000' } = data;
+  let [selectedColor, setSelectedColor] = useLocalState<HsvaColor>('color_picker_choice', hexToHsva(default_color));
 
   return (
     <Window height={400} title={title} width={600} theme="generic">
@@ -76,11 +49,7 @@ export const ColorPickerModal = (_, context) => {
           <Stack.Item grow>
             <Section fill>
               {!!autofocus && <Autofocus />}
-              <ColorSelector
-                color={selectedColor}
-                setColor={setSelectedColor}
-                defaultColor={default_color}
-              />
+              <ColorSelector color={selectedColor} setColor={setSelectedColor} defaultColor={default_color} />
             </Section>
           </Stack.Item>
           <Stack.Item>
@@ -92,14 +61,7 @@ export const ColorPickerModal = (_, context) => {
   );
 };
 
-export const ColorSelector = (
-  {
-    color,
-    setColor,
-    defaultColor,
-  }: { color: HsvaColor; setColor; defaultColor: string },
-  context
-) => {
+export const ColorSelector = ({ color, setColor, defaultColor }: { color: HsvaColor; setColor; defaultColor: string }) => {
   const handleChange = (params: Partial<HsvaColor>) => {
     setColor((current: HsvaColor) => {
       return Object.assign({}, current, params);
@@ -114,11 +76,7 @@ export const ColorSelector = (
           <Stack.Item>
             <div className="react-colorful">
               <SaturationValue hsva={color} onChange={handleChange} />
-              <Hue
-                hue={color.h}
-                onChange={handleChange}
-                className="react-colorful__last-control"
-              />
+              <Hue hue={color.h} onChange={handleChange} className="react-colorful__last-control" />
             </div>
           </Stack.Item>
           <Stack.Item>
@@ -130,20 +88,10 @@ export const ColorSelector = (
             </Box>
             <br />
             <Tooltip content={hexColor} position="bottom">
-              <Box
-                inline
-                width="100px"
-                height="30px"
-                backgroundColor={hexColor}
-              />
+              <Box inline width="100px" height="30px" backgroundColor={hexColor} />
             </Tooltip>
             <Tooltip content={defaultColor} position="bottom">
-              <Box
-                inline
-                width="100px"
-                height="30px"
-                backgroundColor={defaultColor}
-              />
+              <Box inline width="100px" height="30px" backgroundColor={defaultColor} />
             </Tooltip>
           </Stack.Item>
         </Stack>
@@ -178,12 +126,7 @@ export const ColorSelector = (
                 <Hue hue={color.h} onChange={handleChange} />
               </Stack.Item>
               <Stack.Item>
-                <TextSetter
-                  value={color.h}
-                  callback={(_, v) => handleChange({ h: v })}
-                  max={360}
-                  unit="°"
-                />
+                <TextSetter value={color.h} callback={(v) => handleChange({ h: v })} max={360} unit="°" />
               </Stack.Item>
             </Stack>
           </Stack.Item>
@@ -196,11 +139,7 @@ export const ColorSelector = (
                 <Saturation color={color} onChange={handleChange} />
               </Stack.Item>
               <Stack.Item>
-                <TextSetter
-                  value={color.s}
-                  callback={(_, v) => handleChange({ s: v })}
-                  unit="%"
-                />
+                <TextSetter value={color.s} callback={(v) => handleChange({ s: v })} unit="%" />
               </Stack.Item>
             </Stack>
           </Stack.Item>
@@ -213,11 +152,7 @@ export const ColorSelector = (
                 <Value color={color} onChange={handleChange} />
               </Stack.Item>
               <Stack.Item>
-                <TextSetter
-                  value={color.v}
-                  callback={(_, v) => handleChange({ v: v })}
-                  unit="%"
-                />
+                <TextSetter value={color.v} callback={(v) => handleChange({ v: v })} unit="%" />
               </Stack.Item>
             </Stack>
           </Stack.Item>
@@ -233,7 +168,7 @@ export const ColorSelector = (
               <Stack.Item>
                 <TextSetter
                   value={rgb.r}
-                  callback={(_, v) => {
+                  callback={(v) => {
                     rgb.r = v;
                     handleChange(rgbaToHsva(rgb));
                   }}
@@ -253,7 +188,7 @@ export const ColorSelector = (
               <Stack.Item>
                 <TextSetter
                   value={rgb.g}
-                  callback={(_, v) => {
+                  callback={(v) => {
                     rgb.g = v;
                     handleChange(rgbaToHsva(rgb));
                   }}
@@ -273,7 +208,7 @@ export const ColorSelector = (
               <Stack.Item>
                 <TextSetter
                   value={rgb.b}
-                  callback={(_, v) => {
+                  callback={(v) => {
                     rgb.b = v;
                     handleChange(rgbaToHsva(rgb));
                   }}
@@ -296,7 +231,7 @@ const TextSetter = ({
   unit,
 }: {
   value: number;
-  callback: any;
+  callback: (value: number) => void;
   min?: number;
   max?: number;
   unit?: string;
@@ -328,8 +263,7 @@ const TextSetter = ({
  * SOFTWARE.
  */
 
-interface HexColorInputProps
-  extends Omit<ColorInputBaseProps, "escape" | "validate"> {
+interface HexColorInputProps extends Omit<ColorInputBaseProps, 'escape' | 'validate'> {
   /** Enables `#` prefix displaying */
   prefixed?: boolean;
   /** Allows `#rgba` and `#rrggbbaa` color formats */
@@ -337,14 +271,13 @@ interface HexColorInputProps
 }
 
 /** Adds "#" symbol to the beginning of the string */
-const prefix = (value: string) => "#" + value;
+const prefix = (value: string) => '#' + value;
 
-export const HexColorInput = (props: HexColorInputProps): InfernoNode => {
+export const HexColorInput = (props: HexColorInputProps) => {
   const { prefixed, alpha, color, fluid, onChange, ...rest } = props;
 
   /** Escapes all non-hexadecimal characters including "#" */
-  const escape = (value: string) =>
-    value.replace(/([^0-9A-F]+)/gi, "").substring(0, alpha ? 8 : 6);
+  const escape = (value: string) => value.replace(/([^0-9A-F]+)/gi, '').substring(0, alpha ? 8 : 6);
 
   /** Validates hexadecimal strings */
   const validate = (value: string) => validHex(value, alpha);
@@ -379,7 +312,7 @@ export class ColorInput extends Component {
   state: { localValue: string };
 
   constructor(props: ColorInputBaseProps) {
-    super();
+    super(props);
     this.props = props;
     this.state = { localValue: this.props.escape(this.props.color) };
   }
@@ -396,11 +329,7 @@ export class ColorInput extends Component {
       if (!this.props.validate(e.currentTarget.value)) {
         this.setState({ localValue: this.props.escape(this.props.color) }); // return to default;
       } else {
-        this.props.onChange(
-          this.props.escape
-            ? this.props.escape(e.currentTarget.value)
-            : e.currentTarget.value
-        );
+        this.props.onChange(this.props.escape ? this.props.escape(e.currentTarget.value) : e.currentTarget.value);
       }
     }
   };
@@ -414,15 +343,11 @@ export class ColorInput extends Component {
 
   render() {
     return (
-      <Box className={classes(["Input", this.props.fluid && "Input--fluid"])}>
+      <Box className={classes(['Input', this.props.fluid && 'Input--fluid'])}>
         <div className="Input__baseline">.</div>
         <input
           className="Input__input"
-          value={
-            this.props.format
-              ? this.props.format(this.state.localValue)
-              : this.state.localValue
-          }
+          value={this.props.format ? this.props.format(this.state.localValue) : this.state.localValue}
           spellCheck="false" // the element should not be checked for spelling errors
           onInput={this.handleInput}
           onBlur={this.handleBlur}
@@ -449,12 +374,7 @@ const SaturationValue = ({ hsva, onChange }) => {
   };
 
   const containerStyle = {
-    "background-color": `${hsvaToHslString({
-      h: hsva.h,
-      s: 100,
-      v: 100,
-      a: 1,
-    })} !important`,
+    backgroundColor: hsvaToHslString({ h: hsva.h, s: 100, v: 100, a: 1 }),
   };
 
   return (
@@ -463,10 +383,7 @@ const SaturationValue = ({ hsva, onChange }) => {
         onMove={handleMove}
         onKey={handleKey}
         aria-label="Color"
-        aria-valuetext={`Saturation ${Math.round(
-          hsva.s
-        )}%, Brightness ${Math.round(hsva.v)}%`}
-      >
+        aria-valuetext={`Saturation ${Math.round(hsva.s)}%, Brightness ${Math.round(hsva.v)}%`}>
         <Pointer
           className="react-colorful__saturation_value-pointer"
           top={1 - hsva.v / 100}
@@ -478,15 +395,7 @@ const SaturationValue = ({ hsva, onChange }) => {
   );
 };
 
-const Hue = ({
-  className,
-  hue,
-  onChange,
-}: {
-  className?: string;
-  hue: number;
-  onChange: (newHue: { h: number }) => void;
-}) => {
+const Hue = ({ className, hue, onChange }: { className?: string; hue: number; onChange: (newHue: { h: number }) => void }) => {
   const handleMove = (interaction: Interaction) => {
     onChange({ h: 360 * interaction.left });
   };
@@ -498,7 +407,7 @@ const Hue = ({
     });
   };
 
-  const nodeClassName = classes(["react-colorful__hue", className]);
+  const nodeClassName = classes(['react-colorful__hue', className]);
 
   return (
     <div className={nodeClassName}>
@@ -508,8 +417,7 @@ const Hue = ({
         aria-label="Hue"
         aria-valuenow={Math.round(hue)}
         aria-valuemax="360"
-        aria-valuemin="0"
-      >
+        aria-valuemin="0">
         <Pointer
           className="react-colorful__hue-pointer"
           left={hue / 360}
@@ -540,7 +448,7 @@ const Saturation = ({
     });
   };
 
-  const nodeClassName = classes(["react-colorful__saturation", className]);
+  const nodeClassName = classes(['react-colorful__saturation', className]);
 
   return (
     <div className={nodeClassName}>
@@ -558,8 +466,7 @@ const Saturation = ({
         aria-label="Saturation"
         aria-valuenow={Math.round(color.s)}
         aria-valuemax="100"
-        aria-valuemin="0"
-      >
+        aria-valuemin="0">
         <Pointer
           className="react-colorful__saturation-pointer"
           left={color.s / 100}
@@ -589,7 +496,7 @@ const Value = ({
     });
   };
 
-  const nodeClassName = classes(["react-colorful__value", className]);
+  const nodeClassName = classes(['react-colorful__value', className]);
 
   return (
     <div className={nodeClassName}>
@@ -607,8 +514,7 @@ const Value = ({
         aria-label="Value"
         aria-valuenow={Math.round(color.s)}
         aria-valuemax="100"
-        aria-valuemin="0"
-      >
+        aria-valuemin="0">
         <Pointer
           className="react-colorful__value-pointer"
           left={color.v / 100}
@@ -648,26 +554,16 @@ const RGBSlider = ({
   const nodeClassName = classes([`react-colorful__${target}`, className]);
 
   let selected =
-    target === "r"
+    target === 'r'
       ? `rgb(${Math.round(rgb.r)},0,0)`
-      : target === "g"
-      ? `rgb(0,${Math.round(rgb.g)},0)`
-      : `rgb(0,0,${Math.round(rgb.b)})`;
+      : target === 'g'
+        ? `rgb(0,${Math.round(rgb.g)},0)`
+        : `rgb(0,0,${Math.round(rgb.b)})`;
 
   return (
     <div className={nodeClassName}>
-      <Interactive
-        onMove={handleMove}
-        onKey={handleKey}
-        aria-valuenow={rgb[target]}
-        aria-valuemax="100"
-        aria-valuemin="0"
-      >
-        <Pointer
-          className={`react-colorful__${target}-pointer`}
-          left={rgb[target] / 255}
-          color={selected}
-        />
+      <Interactive onMove={handleMove} onKey={handleKey} aria-valuenow={rgb[target]} aria-valuemax="100" aria-valuemin="0">
+        <Pointer className={`react-colorful__${target}-pointer`} left={rgb[target] / 255} color={selected} />
       </Interactive>
     </div>
   );

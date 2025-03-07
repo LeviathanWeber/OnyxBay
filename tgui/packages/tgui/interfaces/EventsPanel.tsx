@@ -18,7 +18,7 @@ type InputData = {
   presets: string[];
 };
 
-function EventTooltip(props: { event: Event }, context: any) {
+function EventTooltip(props: { event: Event }) {
   const event = props.event;
   const rawHtml = {
     __html: event.conditions_description,
@@ -40,8 +40,8 @@ function EventTooltip(props: { event: Event }, context: any) {
   );
 }
 
-function EventButton(props: { event: Event }, context: any) {
-  const { act } = useBackend<InputData>(context);
+function EventButton(props: { event: Event }) {
+  const { act } = useBackend<InputData>();
   const event = props.event;
 
   return (
@@ -91,8 +91,8 @@ function EventButton(props: { event: Event }, context: any) {
   );
 }
 
-export function EventsPanel(props: any, context: any) {
-  const { getTheme, data, act } = useBackend<InputData>(context);
+export function EventsPanel(props: any) {
+  const { getTheme, data, act } = useBackend<InputData>();
 
   data.events.sort((a, b) => b.chance - a.chance);
   const waitingEvents = [];

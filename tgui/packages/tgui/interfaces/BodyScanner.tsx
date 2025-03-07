@@ -49,7 +49,7 @@ interface InputData {
   medical_data: MedicalData;
 }
 
-export const BodyScanner = (props: any, context: any) => {
+export const BodyScanner = (props: any) => {
   return (
     <Window width={800} height={800}>
       <Window.Content scrollable>
@@ -59,8 +59,8 @@ export const BodyScanner = (props: any, context: any) => {
   );
 };
 
-const ScanData = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+const ScanData = (props: any) => {
+  const { act, data } = useBackend<InputData>();
   if (!data.medical_data) {
     return <NoticeBox>Body Scanner is empty.</NoticeBox>;
   }

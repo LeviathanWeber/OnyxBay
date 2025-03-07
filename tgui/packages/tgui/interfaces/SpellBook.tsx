@@ -143,13 +143,12 @@ const ArtifactIcon = (
 
 const InspectSpellButton = (
   props: Spell,
-  context: any,
   ignored: boolean = false,
   selected: boolean = false,
   showCost: boolean = true,
   key: any
 ) => {
-  const { act } = useBackend<InputData>(context);
+  const { act } = useBackend<InputData>();
 
   return (
     <Button
@@ -167,13 +166,12 @@ const InspectSpellButton = (
 
 const InspectArtifactButton = (
   props: Artifact,
-  context: any,
   ignored: boolean = false,
   selected: boolean = false,
   showCost: boolean = true,
   key: any
 ) => {
-  const { act } = useBackend<InputData>(context);
+  const { act } = useBackend<InputData>();
 
   return (
     <Button
@@ -189,8 +187,8 @@ const InspectArtifactButton = (
   );
 };
 
-const classCard = (props: Class, context: any, key: any) => {
-  const { data, act } = useBackend<InputData>(context);
+const classCard = (props: Class, key: any) => {
+  const { data, act } = useBackend<InputData>();
   const isDisabled = !!data.user.class;
 
   return (
@@ -223,7 +221,7 @@ const classCard = (props: Class, context: any, key: any) => {
         <Divider />
         <h3>Spells:</h3>
         {props.spells.map((s) => {
-          return InspectSpellButton(s, context, false, false, true, s.path);
+          return InspectSpellButton(s, false, false, true, s.path);
         })}
       </Flex.Item>
       <Flex.Item>
@@ -231,15 +229,15 @@ const classCard = (props: Class, context: any, key: any) => {
         <Divider />
         <h3>Artifacts:</h3>
         {props.artifacts.map((a) => {
-          return InspectArtifactButton(a, context, false, false, true, a.path);
+          return InspectArtifactButton(a, false, false, true, a.path);
         })}
       </Flex.Item>
     </Flex>
   );
 };
 
-const navPanel = (props: any, context: any) => {
-  const { data, act } = useBackend<InputData>(context);
+const navPanel = (props: any) => {
+  const { data, act } = useBackend<InputData>();
   const { page } = data;
 
   return (
@@ -280,15 +278,15 @@ const navPanel = (props: any, context: any) => {
   );
 };
 
-const classesPage = (props: any, context: any) => {
-  const { data } = useBackend<InputData>(context);
+const classesPage = (props: any) => {
+  const { data } = useBackend<InputData>();
   const { classes } = data;
 
   return (
     <Flex direction="column">
-      <Flex.Item>{navPanel(props, context)}</Flex.Item>
+      <Flex.Item>{navPanel(props)}</Flex.Item>
       <Flex.Item mt="0.5rem">
-        {classes?.map((c, i) => classCard(c, context, c.path))}
+        {classes?.map((c, i) => classCard(c, c.path))}
       </Flex.Item>
     </Flex>
   );
@@ -339,7 +337,7 @@ const spellCard = (props: Spell, buttons?: InfernoNode) => {
   );
 };
 
-const artifactCard = (props: Artifact, context: any) => {
+const artifactCard = (props: Artifact) => {
   return (
     <Flex className="Card" direction="column">
       <Flex.Item>
@@ -353,8 +351,8 @@ const artifactCard = (props: Artifact, context: any) => {
   );
 };
 
-const BuyArtifactCard = (props: Artifact, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+const BuyArtifactCard = (props: Artifact) => {
+  const { act, data } = useBackend<InputData>();
   const { user } = data;
 
   return (
@@ -377,25 +375,21 @@ const BuyArtifactCard = (props: Artifact, context: any) => {
   );
 };
 
-const spellsPage = (props: any, context: any) => {
-  const { data } = useBackend<InputData>(context);
+const spellsPage = (props: any) => {
+  const { data } = useBackend<InputData>();
   const [nameFilter, setNameFilter] = useLocalState(
-    context,
     "spellsNameFilter",
     null
   );
   const [classNameFilter, setClassNameFilter] = useLocalState(
-    context,
     "spellsClassNameFilter",
     null
   );
   const [abilityFilter, setAbilityFilter] = useLocalState(
-    context,
     "spellsAbilityFilter",
     null
   );
   const [schoolFilter, setSchoolFilter] = useLocalState(
-    context,
     "spellsSchoolFilter",
     null
   );
@@ -403,7 +397,7 @@ const spellsPage = (props: any, context: any) => {
     return c.spells;
   });
 
-  let inspectingSpell: Spell = null;
+  let inspectingSpell: Spell | null = null;
   let spellsToShow: Spell[] = [];
   const abilities: string[] = [];
   const schools: string[] = [];
@@ -473,7 +467,7 @@ const spellsPage = (props: any, context: any) => {
 
   return (
     <Flex direction="column">
-      <Flex.Item>{navPanel(props, context)}</Flex.Item>
+      <Flex.Item>{navPanel(props)}</Flex.Item>
       <Flex.Item className="Card" pb="1rem" mt="0.5rem">
         <h2>Spells</h2>
         <Flex wrap>
@@ -483,7 +477,6 @@ const spellsPage = (props: any, context: any) => {
             );
             return InspectSpellButton(
               s,
-              context,
               isIgnored,
               s.path === inspectingSpell?.path,
               false,
@@ -562,15 +555,13 @@ const spellsPage = (props: any, context: any) => {
   );
 };
 
-const artifactsPage = (props: any, context: any) => {
-  const { data } = useBackend<InputData>(context);
+const artifactsPage = (props: any) => {
+  const { data } = useBackend<InputData>();
   const [nameFilter, setNameFilter] = useLocalState(
-    context,
     "artifactsNameFilter",
     null
   );
   const [classNameFilter, setClassNameFilter] = useLocalState(
-    context,
     "artifactsClassNameFilter",
     null
   );
@@ -631,7 +622,7 @@ const artifactsPage = (props: any, context: any) => {
 
   return (
     <Flex direction="column">
-      <Flex.Item>{navPanel(props, context)}</Flex.Item>
+      <Flex.Item>{navPanel(props)}</Flex.Item>
       <Flex.Item pb="1rem" mt="0.5rem" className="Card">
         <h2>Artifacts</h2>
         <Flex wrap>
@@ -641,7 +632,6 @@ const artifactsPage = (props: any, context: any) => {
             );
             return InspectArtifactButton(
               a,
-              context,
               isIgnored,
               a.path === inspectingArtifact?.path,
               false,
@@ -678,14 +668,14 @@ const artifactsPage = (props: any, context: any) => {
         })}
       </Flex.Item>
       <Flex.Item>
-        {inspectingArtifact ? artifactCard(inspectingArtifact, context) : null}
+        {inspectingArtifact ? artifactCard(inspectingArtifact) : null}
       </Flex.Item>
     </Flex>
   );
 };
 
-const characterPage = (props: any, context: any) => {
-  const { data, act } = useBackend<InputData>(context);
+const characterPage = (props: any) => {
+  const { data, act } = useBackend<InputData>();
   const { user, classes } = data;
 
   const userClass = classes.find((c, i) => c.path === user.class);
@@ -693,7 +683,7 @@ const characterPage = (props: any, context: any) => {
   if (!userClass) {
     return (
       <Flex direction="column">
-        <Flex.Item>{navPanel(props, context)}</Flex.Item>
+        <Flex.Item>{navPanel(props)}</Flex.Item>
         <Flex.Item pb="1rem" mt="0.5rem" align="center">
           <h2>Choose a class first.</h2>
         </Flex.Item>
@@ -718,7 +708,7 @@ const characterPage = (props: any, context: any) => {
 
   return (
     <Flex direction="column">
-      <Flex.Item>{navPanel(props, context)}</Flex.Item>
+      <Flex.Item>{navPanel(props)}</Flex.Item>
       <Flex.Item mt="0.5rem" className="Card">
         <h2>
           {user.name}
@@ -829,7 +819,7 @@ const characterPage = (props: any, context: any) => {
         >
           <Flex direction="column">
             {userClass.artifacts.map((a, i) => {
-              return BuyArtifactCard(a, context);
+              return BuyArtifactCard(a);
             })}
           </Flex>
         </Collapsible>
@@ -853,14 +843,14 @@ const PAGES = {
   },
 };
 
-export const SpellBook = (props: any, context: any) => {
-  const { data } = useBackend<InputData>(context);
+export const SpellBook = (props: any) => {
+  const { data } = useBackend<InputData>();
 
   return (
     <Window theme="spellbook" width={425} height={520}>
       <link rel="stylesheet" type="text/css" href="reaver.css" />
       <Window.Content scrollable>
-        {PAGES[data.page].render(props, context)}
+        {PAGES[data.page].render(props)}
       </Window.Content>
     </Window>
   );

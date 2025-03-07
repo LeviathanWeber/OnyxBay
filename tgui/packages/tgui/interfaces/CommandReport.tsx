@@ -15,36 +15,32 @@ interface CommandReportData {
   announcerSounds: string[];
 }
 
-export const CommandReport = (props: CommandReportData, context: any) => {
-  const { data, act } = useBackend<CommandReportData>(context);
+export const CommandReport = (props: CommandReportData) => {
+  const { data, act } = useBackend<CommandReportData>();
   const { commandNamePresets, announcerSounds } = data;
 
-  const [title, setTitle] = useLocalState(context, "title", "Central Command");
+  const [title, setTitle] = useLocalState("title", "Central Command");
   const setCustomTitle = (title: string, use: boolean) => {
     setTitle(title);
     setUseCustomTitle(use);
   };
   const [useCustomTitle, setUseCustomTitle] = useLocalState(
-    context,
     "customTitle",
     false
   );
-  const [text, setText] = useLocalState(context, "text", "");
-  const [sender, setSender] = useLocalState(context, "sender", "Common");
+  const [text, setText] = useLocalState("text", "");
+  const [sender, setSender] = useLocalState("sender", "Common");
   const [sound, setSound] = useLocalState(
-    context,
     "sound",
     "/datum/announce/command_report"
   );
   const [announceContents, setAnnounceContents] = useLocalState(
-    context,
     "true",
     true
   );
-  const [doNewscast, setDoNewscast] = useLocalState(context, "newscast", true);
-  const [printReport, setPrintReport] = useLocalState(context, "report", true);
+  const [doNewscast, setDoNewscast] = useLocalState("newscast", true);
+  const [printReport, setPrintReport] = useLocalState("report", true);
   const [reportSent, setReportSent] = useLocalState(
-    context,
     "reportSent",
     false
   );

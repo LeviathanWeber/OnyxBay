@@ -29,21 +29,19 @@ interface InputData {
   taserVariants: TaserVariant[];
 }
 
-export const SecSmith = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+export const SecSmith = (props: any) => {
+  const { act, data } = useBackend<InputData>();
   const [ownerInputOpen, setOwnerInputOpen] = useLocalState(
-    context,
     "ownerInput",
     false
   );
 
   const [assembleMenuOpen, setAssembleMenuOpen] = useLocalState(
-    context,
     "assembleMenu",
     false
   );
 
-  const [newOwner, setNewOwner] = useLocalState(context, "name", "");
+  const [newOwner, setNewOwner] = useLocalState("name", "");
 
   return (
     <Window width={400} height={320}>

@@ -3,15 +3,12 @@
  * SPDX-License-Identifier: MIT
  */
 
-@use 'sass:math';
 @use 'sass:color';
+@use 'sass:math';
 @use '../base.scss';
 @use '../colors.scss';
 
-$color-default: color.scale(
-  colors.fg(colors.$primary),
-  $lightness: 75%
-) !default;
+$color-default: color.scale(colors.fg(colors.$primary), $lightness: 75%) !default;
 $text-color: rgba(255, 255, 255, 0.5) !default;
 $text-color-selected: color.scale($color-default, $lightness: 25%) !default;
 $tab-color: transparent !default;
@@ -36,7 +33,8 @@ $fg-map: colors.$fg-map !default;
   background-color: transparent;
 }
 
-.Section:not(.Section--fitted) .Tabs {
+// Child combinator does not seem to work here, but if it ever does start working, this seems to help with nonfitted section tab headers
+.Section:not(.Section--fitted) > .Tabs {
   margin: 0 -0.5em 0.5em;
 
   &:first-child {
@@ -51,7 +49,7 @@ $fg-map: colors.$fg-map !default;
 
 .Tabs--horizontal {
   margin-bottom: 0.5em;
-  padding: 0.25em 0.25em 0 0.25em;
+  padding: 0.25em 0 0.25em 0.25em;
 
   &:last-child {
     margin-bottom: 0;
@@ -74,16 +72,13 @@ $fg-map: colors.$fg-map !default;
   color: $text-color;
   min-height: 2.25em;
   min-width: 4em;
-  transition: background-color 50ms ease-out;
 }
 
 .Tab:not(.Tab--selected):hover {
   background-color: $tab-color-hovered;
-  transition: background-color 0;
 }
 
 .Tab--selected {
-  background-color: $tab-color-selected;
   color: $text-color-selected;
 }
 
